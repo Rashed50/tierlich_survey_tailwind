@@ -12,7 +12,8 @@ export const langContent = {
     question4: "How many cats?",
     question5: "How many dogs?",
     question6: "How many cat and dogs?",
-    question7: "What kind of pet do you have?",
+    question7: "More than 3",
+    question8: "What kind of pet do you have?",
   },
 
   DE: {
@@ -28,7 +29,8 @@ export const langContent = {
     question4: "Wie viele Katzen?",
     question5: "Wie viele Hunde?",
     question6: "Wie viele Katzen und Hunde?",
-    question7: "Was für ein Haustier hast du?",
+    question7: "Mehr als 3",
+    question8: "Was für ein Haustier hast du?",
   },
 };
 

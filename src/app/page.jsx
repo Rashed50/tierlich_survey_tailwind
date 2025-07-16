@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { redirect } from "next/dist/server/api-utils";
 import YesNoQuestionComponent from "@/components/utils/YesNoQuestionComponent";
 import SelectableChoicesComponent from "@/components/utils/SelectableChoicesComponent";
 import ChoseComponent from "@/components/ChoseDogCatComponent";
@@ -7,6 +9,7 @@ import { langContent } from "@/lib/langContent";
 
 export default function StepManager() {
    const [step, setStep] = useState(1);
+   const router = useRouter();
    const [answers, setAnswers] = useState({});
 
    const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "EN";
@@ -41,6 +44,37 @@ export default function StepManager() {
       sessionStorage.setItem("question3_ans", answer);
       goToNext();
    };
+
+   // ✅ Redirect if step === 3
+   useEffect(() => {
+      if (step === 3) {
+         const petType = sessionStorage.getItem("question2_ans");
+         let questionKey = "";
+
+         switch (petType) {
+            case "🐱":
+               questionKey = "question4";
+               break;
+            case "🐶":
+               questionKey = "question5";
+               break;
+            case "🐶🐱":
+               questionKey = "question6";
+               break;
+            case "Text":
+               questionKey = "question7";
+               break;
+            default:
+               questionKey = null;
+         }
+
+         if (questionKey) {
+            sessionStorage.setItem("current_question", t[questionKey]);
+         }
+
+         router.push("/set-number-of-pet?fromStep=3");
+      }
+   }, [step, t, router]);
 
    switch (step) {
       case 1:
@@ -77,35 +111,9 @@ export default function StepManager() {
          }
 
       case 3: {
-         const petType = sessionStorage.getItem("question2_ans");
-         let question = "";
-
-         switch (petType) {
-            case "🐱":
-               question = t.question4;
-               break;
-            case "🐶":
-               question = t.question5;
-               break;
-            case "🐶🐱":
-               question = t.question6;
-               break;
-            case "Text":
-               question = t.question7;
-               break;
-            default:
-               question = "Invalid pet type!";
-         }
-
-         return (
-            <SelectableChoicesComponent
-               progress={45}
-               question={question}
-               back={() => setStep(2)}
-               next={() => setStep(4)}
-            />
-         );
+         return <div className="text-center mt-10">Redirecting...</div>;
       }
+
 
       default:
          return <div className="text-center mt-10">End of steps</div>;

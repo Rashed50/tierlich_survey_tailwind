@@ -35,20 +35,20 @@ export default function FooterComponent({
         )}
 
         {/* Further */}
-        {nextHref ? (
-          <Link
-            href={nextHref}
-            className="bg-white text-[#4A3A2D] px-4 py-2 text-sm rounded-full font-medium hover:bg-gray-100 transition"
-          >
-            {t.buttonFurther}
-          </Link>
-        ) : isSubmit ? (
+        {isSubmit ? (
           <button
             type="submit"
             className="bg-white text-[#4A3A2D] px-4 py-2 text-sm rounded-full font-medium hover:bg-gray-100 transition"
           >
             {t.buttonFurther}
           </button>
+        ) : nextHref ? (
+          <Link
+            href={nextHref}
+            className="bg-white text-[#4A3A2D] px-4 py-2 text-sm rounded-full font-medium hover:bg-gray-100 transition"
+          >
+            {t.buttonFurther}
+          </Link>
         ) : (
           <div />
         )}

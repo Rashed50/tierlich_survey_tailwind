@@ -50,7 +50,7 @@ export default function SelectableChoicesComponent({
 
             {/* Options */}
             <div className="flex flex-col gap-3 max-w-md mx-auto w-full px-4 mt-10">
-                {["Option 1", "Option 2", "Option 3", "Option 4"].map((opt, idx) => (
+                {["1", "2", "3", "How ?"].map((opt, idx) => (
                     <button
                         key={idx}
                         type="button"
