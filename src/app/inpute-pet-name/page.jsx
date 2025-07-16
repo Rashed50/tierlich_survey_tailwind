@@ -21,6 +21,13 @@ export default function SetNumberOfPet() {
             <div className="text-center mt-10 text-xl font-semibold">
                 Question
             </div>
+               <input
+            type="text"
+            // value={""}
+            // onChange={(e) => setText(e.target.value)}
+            placeholder="Enter Pet Name"
+            className="w-full max-w-xs h-10 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+            />
 
             
 
