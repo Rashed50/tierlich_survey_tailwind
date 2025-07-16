@@ -23,7 +23,7 @@ export default function SetNumberOfPet() {
       const storedValue = sessionStorage.getItem('number_of_pets');
       if (storedValue) {
         setSessionValue(storedValue);
-        sessionStorage.setItem("number_of_pets", "1"); // Default to 1 for testing
+        sessionStorage.setItem("number_of_pets", "1"); // Default  1 for testing
       }
     }
   }, []);

@@ -48,31 +48,15 @@ export default function SetNumberOfPet() {
          {/* Answer Buttons */}
          <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
   
-            <button  type="button"
-               onClick={() => setSelected("Wohnung")} // ✅ No
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Wohnung"
-               )}`}
-            >
-               {"Wohnung"}
-            </button>
+              <input
+            type="text"
+            // value={""}
+            // onChange={(e) => setText(e.target.value)}
+            placeholder="Enter additional information"
+            className="w-full max-w-xs h-10 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+            />
 
-            <button  type="button"
-               onClick={() => setSelected("Mehrfamilienhaus")} // ✅ No
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Mehrfamilienhaus"
-               )}`}
-            >
-               {"Mehrfamilienhaus"}
-            </button>
-            <button  type="button"
-               onClick={() => setSelected("Einfamilienhaus")} // ✅ No
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Einfamilienhaus"
-               )}`}
-            >
-               {"Einfamilienhaus"}
-            </button>
+            
 
          </div>
 

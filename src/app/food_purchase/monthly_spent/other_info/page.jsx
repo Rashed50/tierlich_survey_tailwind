@@ -23,8 +23,7 @@ export default function SetNumberOfPet() {
       //   }
 
        //  sessionStorage.setItem("number_of_pets", selected);
-
-                
+ 
       router.push("/food_purchase/monthly_spent/living_location");
          
     };
@@ -62,7 +61,7 @@ export default function SetNumberOfPet() {
                 
 
             {/* Footer */}
-            <FooterComponent backHref="/food_purchase/qs_what_do_you_feed" nextHref="/food_purchase/monthly_spent/living_location" isSubmit />
+            <FooterComponent backHref="/food_purchase" nextHref="/food_purchase/monthly_spent/living_location" isSubmit />
         </form>
     );
 }
