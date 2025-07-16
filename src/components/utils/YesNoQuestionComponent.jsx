@@ -32,10 +32,13 @@ export default function YesNoQuestionComponent({
       }
    };
 
+   
+
    const getButtonStyle = (option) =>
       option === selected
          ? "bg-white text-[#4A3A2D] border-2 border-[#4A3A2D]"
          : "bg-[#4A3A2D] text-white";
+
 
    return (
       <form
@@ -76,7 +79,8 @@ export default function YesNoQuestionComponent({
          </div>
 
          {/* Footer */}
-         <FooterComponent onBack={back} isSubmit />
+         <FooterComponent  onBack={back} isSubmit />
+         
       </form>
    );
 }

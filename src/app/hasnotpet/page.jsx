@@ -5,29 +5,13 @@ import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
 
-export default function SetNumberOfPet() {
-    const [session_value, setSessionValue] = useState('');
+export default function HasNotPet() {
     const [selected, setSelected] = useState();
     const searchParams = useSearchParams();
     const router = useRouter();
 
     const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "DE";
     const t = langContent[lang];
-  
-
-
-  // Begining of Home page set all session value
-  useEffect(() => {
-    // This runs only in the browser
-    if (typeof window !== 'undefined') {
-      const storedValue = sessionStorage.getItem('number_of_pets');
-      if (storedValue) {
-        setSessionValue(storedValue);
-        sessionStorage.setItem("number_of_pets", "1"); // Default to 1 for testing
-      }
-    }
-  }, []);
-
 
     
     const handleSubmit = (e) => {
@@ -39,13 +23,14 @@ export default function SetNumberOfPet() {
 
        //  sessionStorage.setItem("number_of_pets", selected);
 
-         if (selected === "0") {
-            router.push("/hasnotpet");
+
+        if (selected === "1") {
+            router.push("/hasnotpet/pet_type");            
             return;
-         }else {
-          // yes has pet            
-            router.push("/has_pet");
-         }
+        }else {
+            router.push("/hasnotpet/no");
+            return;
+        }
        
     };
 
@@ -61,8 +46,7 @@ export default function SetNumberOfPet() {
 
               {/* Question Text */}
          <div className="text-center mt-10 px-4 text-xl font-semibold">
-            {/* {t.question1}             */}
-            {"Hast du Haustiere?"}
+            {t.qs_kommt_ein}            
          </div>
 
          {/* Answer Buttons */}
@@ -77,9 +61,7 @@ export default function SetNumberOfPet() {
             >
                {"Ja"}
             </button>
-            <button
-               type="button"
-               onClick={() => setSelected("0")} // ✅ No
+            <button type="button"   onClick={() => setSelected("0")} // ✅ No
                className={`w-full max-w-xs h-14 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
                   "0"
                )}`}
@@ -88,10 +70,8 @@ export default function SetNumberOfPet() {
             </button>
          </div>
 
-            
-
             {/* Footer */}
-            <FooterComponent backHref="/set-number-of-pet" nextHref="/page6" isSubmit />
+            <FooterComponent backHref="/set-number-of-pet" nextHref="/hasnotpet" isSubmit />
         </form>
     );
 }
