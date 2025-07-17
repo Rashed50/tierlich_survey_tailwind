@@ -18,7 +18,7 @@ export const langContent = {
     qs_which_pet_has: 'Was für ein Hautier hast du aktuell bei dir?',
 
     qs_kommt_ein: 'Kommt ein Haustier für dich in Frage',
-    qs_pet_type: 'Welches Haustier hast du denn im Kopf??',
+    qs_pet_type: 'Welches Haustier hast du denn im Kopf?',
     qs_other_pet: 'Was für ein Tier hast du?',
     qs_food_purchase_source: 'Wie beziehst du aktuell das Futter für /pet_name?',
     qs_food_purchase_online: 'Bei welchen Shops bestellst du?',
@@ -26,7 +26,7 @@ export const langContent = {
     qs_what_do_you_feed: 'Was gefällt dir da richtig gut, worauf du ungern verzichten würdest?',
     qs_how_often_purchase: 'Wie oft musst du dafür losziehen??',
     qs_what_donot_like_feed: 'Gibt\'s etwas, das dich stört?',
-    qs_monthly_cost: 'Wie viel gibst du monatlich für dein Haustier aus??',
+    qs_monthly_cost: 'Wie viel gibst du monatlich für dein Haustier aus?',
     qs_important_purchase_feature: 'Worauf achtest du am meisten beim Kauf?',
     qs_pet_user_age : 'Wie alt bist du?',
     qs_pet_living_location: 'Wie wohnst du?',
@@ -35,6 +35,13 @@ export const langContent = {
     qs_other_info_for_1_pet: 'Was sollten wir sonst noch über deinen flauschigen Mitbewohner wissen? Allergien vielleicht 🤔',
     qs_pet_owner_living_location: 'Wie lautet die Postleitzahl, wo Ihr aktuell wohnst?',
 
+    // stationary questions
+    qs_food_purchase_interval: 'Wie oft musst du dafür losziehen?',
+    qs_food_purchase_stationary_obstacles: 'Was nervt dich dabei am meisten?',
+    info_gdpr_rules: 'E-Maill Adress Abfrage mit DSGVO und Hinweis auf Rabatt und Neuigkeiten',
+
+    qs_interested_in_buying_individual_food_box: 'Unsere Vision: Ein smartes System, das dir automatisch passendes Tierfutter liefert - ohne ständiges Nachbestellen oder Schleppen. Hättest du Interesse an so einer Lösung?',
+     
   },
 
 

@@ -25,7 +25,7 @@ export default function SetNumberOfPet() {
        //  sessionStorage.setItem("number_of_pets", selected);
 
                 
-      router.push("/food_purchase/monthly_spent/");
+      router.push("/food_purchase/monthly_spent/interested_food_box");
          
     };
 
@@ -52,7 +52,7 @@ export default function SetNumberOfPet() {
             type="text"
             // value={""}
             // onChange={(e) => setText(e.target.value)}
-            placeholder="Enter additional information"
+            placeholder="Enter Ihr PLZ information"
             className="w-full max-w-xs h-10 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
             />
 
@@ -63,7 +63,7 @@ export default function SetNumberOfPet() {
                 
 
             {/* Footer */}
-            <FooterComponent backHref="/food_purchase/qs_what_do_you_feed" nextHref="/food_purchase/monthly_spent/living_location" isSubmit />
+            <FooterComponent backHref="/food_purchase/monthly_spent/living_location" nextHref="/food_purchase/monthly_spent/interested_food_box" isSubmit />
         </form>
     );
 }
