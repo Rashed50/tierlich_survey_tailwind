@@ -25,7 +25,7 @@ export default function SetNumberOfPet() {
         }
 
         sessionStorage.setItem("number_of_pets", selected);
-        router.push("/inpute-pet-name");
+        router.push("/input-pet-name");
     };
 
     const getButtonStyle = (option) =>

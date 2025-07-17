@@ -9,6 +9,7 @@ export default function HasNotPet() {
     const [selected, setSelected] = useState();
     const [error, setError] = useState(false);
     const [pet_type, setPetType] = useState('');
+    const [step, setStep] = useState(1); // 1: Select dog count, 2: Select cat count
 
     const router = useRouter();
 
@@ -16,21 +17,31 @@ export default function HasNotPet() {
     const t = langContent[lang];
 
     useEffect(() => {
-        const storedPetTypeValue = sessionStorage.getItem('pet_type') || "1"
-        console.log("Pet Type =", storedPetTypeValue)
+        const storedPetTypeValue = sessionStorage.getItem('pet_type') || "1";
+        console.log("Pet Type =", storedPetTypeValue);
         if (storedPetTypeValue === '1') {
-            setPetType("Hund"); // Dog
+            setPetType("Hund");
         } else if (storedPetTypeValue === '2') {
-            setPetType("Katze"); // Cat
+            setPetType("Katze");
         } else if (storedPetTypeValue === '3') {
-            setPetType("Hund und Katze"); // Dog and Cat
+            setPetType("Hund und Katze");
         }
 
-        const storedPetNumberValue = sessionStorage.getItem('pet_number') || "1"
-        if (storedPetNumberValue) {
-            setSelected(storedPetNumberValue);
+        const storedPetNumber = sessionStorage.getItem('pet_number');
+        if (storedPetNumber) {
+            try {
+                const parsed = JSON.parse(storedPetNumber);
+                if (parsed.dog !== undefined) {
+                    setSelected(parsed.dog);
+                } else if (parsed.cat !== undefined) {
+                    setSelected(parsed.cat);
+                } else if (parsed.count !== undefined) {
+                    setSelected(parsed.count);
+                }
+            } catch {
+                setSelected(storedPetNumber);
+            }
         }
-
     }, []);
 
     const handleSubmit = (e) => {
@@ -41,15 +52,48 @@ export default function HasNotPet() {
             return;
         }
 
-        if (selected) {
-            // console.log('After submit Selected number:', selected); 
-            sessionStorage.setItem("pet_number", selected || "1");
-            router.push("/inpute-pet-name");
+        if (pet_type === "Hund und Katze") {
+            if (step === 1) {
+                // Store dog count and move to cat count selection
+                const petData = { dog: selected };
+                sessionStorage.setItem("pet_number", JSON.stringify(petData));
+                setStep(2);
+                setSelected(undefined); // Reset selection for cat count
+                setError(false);
+                return;
+            } else if (step === 2) {
+                // Get previously stored dog count
+                const prevData = JSON.parse(sessionStorage.getItem('pet_number') || '{}');
+                // Store both counts as JSON object
+                const petData = {
+                    dog: prevData.dog,
+                    cat: selected,
+                    type: "Hund und Katze"
+                };
+                sessionStorage.setItem("pet_number", JSON.stringify(petData));
+                router.push("/input-pet-name");
+            }
+        } else {
+            // For single pet type
+            const petData = {
+                count: selected,
+                type: pet_type
+            };
+            sessionStorage.setItem("pet_number", JSON.stringify(petData));
+            router.push("/input-pet-name");
         }
     };
 
     const handleBack = () => {
-        router.push("/has_pet");
+        if (pet_type === "Hund und Katze" && step === 2) {
+            // Go back to dog count selection
+            setStep(1);
+            const prevData = JSON.parse(sessionStorage.getItem('pet_number') || '{}');
+            setSelected(prevData.dog || undefined);
+        } else {
+            router.push("/has_pet");
+        }
+        setError(false);
     };
 
     const getOptionStyle = (option) =>
@@ -57,16 +101,25 @@ export default function HasNotPet() {
             ? "bg-white text-[#4A3A2D] border-2 border-[#4A3A2D]"
             : "bg-[#4A3A2D] text-white";
 
+    const renderQuestion = () => {
+        if (pet_type === "Hund und Katze") {
+            return step === 1
+                ? "Wie viele Hunde begleiten dich?"
+                : "Wie viele Katzen begleiten dich?";
+        }
+        return `Wie viele ${pet_type} begleiten dich?`;
+    };
+
     return (
         <form
             onSubmit={handleSubmit}
             className="min-h-screen flex flex-col bg-[#f8f4ee] text-[#4A4A4A]"
         >
-            <HeaderComponent progress={10} />
+            <HeaderComponent progress={pet_type === "Hund und Katze" ? (step === 1 ? 30 : 70) : 50} />
 
             {/* Question Text */}
             <div className="text-center mt-10 text-xl font-semibold">
-                {"Wie viele  " + pet_type + " begleiten dich?"}
+                {renderQuestion()}
             </div>
 
             {error && (
@@ -91,7 +144,11 @@ export default function HasNotPet() {
             </div>
 
             {/* Footer */}
-            <FooterComponent onBack={handleBack} isSubmit />
+            <FooterComponent
+                onBack={handleBack}
+                isSubmit={!!selected}
+                nextText={pet_type === "Hund und Katze" && step === 1 ? "Weiter" : undefined}
+            />
         </form>
     );
 }

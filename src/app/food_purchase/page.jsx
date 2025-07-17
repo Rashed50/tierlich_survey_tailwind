@@ -11,7 +11,11 @@ export default function SetNumberOfPet() {
     const router = useRouter();
 
     const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "DE";
-    const t = langContent[lang];
+   const t = langContent[lang];
+   
+   const handleBack = () => {
+      router.push("/has_pet/how_many");
+   };
 
     
     const handleSubmit = (e) => {
@@ -75,7 +79,7 @@ export default function SetNumberOfPet() {
             
 
             {/* Footer */}
-            <FooterComponent backHref="/food_purchase"  isSubmit />
+          <FooterComponent onBack={handleBack}  isSubmit />
         </form>
     );
 }
