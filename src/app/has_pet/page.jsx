@@ -28,32 +28,32 @@ export default function SetNumberOfPet() {
 
         if (!selected) {
             setError(true);
-            debugger;
+            // debugger;
             return;
-        }      
+        }
 
         if (selected === 1) {
             sessionStorage.setItem("pet_type", "Hund");
             router.push("/has_pet/how_many");
             return;
-        }else if ( selected === 2) {
+        } else if (selected === 2) {
             sessionStorage.setItem("pet_type", "Katze");
             router.push("/has_pet/how_many");
             return;
         }
-        else if ( selected === 3) {
-            sessionStorage.setItem("pet_type", "Hund und Katze") ;
+        else if (selected === 3) {
+            sessionStorage.setItem("pet_type", "Hund und Katze");
             router.push("/has_pet/how_many");
             return;
         }
         else {
             debugger;
-            sessionStorage.setItem("pet_type", "Anderes") ;        
+            sessionStorage.setItem("pet_type", "Anderes");
             router.push("/has_pet/other");
             return;
         }
 
-        
+
     };
 
     const getButtonStyle = (option) =>
@@ -62,112 +62,90 @@ export default function SetNumberOfPet() {
             : "bg-[#4A3A2D] text-white";
 
     const handleBack = () => {
-        if (fromStep === "3") {
-            router.push("/?step=3");
-        } else {
-            router.push("/");
-        }
+        router.push("/");
     };
 
-       const getOptionStyle = (opt) =>
-      opt === selected
-         ? "bg-white text-[#4A3A2D] border-2 border-[#4A3A2D]"
-         : "bg-[#4A3A2D] text-white";
+    const getOptionStyle = (opt) =>
+        opt === selected
+            ? "bg-white text-[#4A3A2D] border-2 border-[#4A3A2D]"
+            : "bg-[#4A3A2D] text-white";
 
     return (
-        <form  onSubmit={handleSubmit}  className="min-h-screen flex flex-col bg-[#f8f4ee] text-[#4A4A4A]" >
+        <form onSubmit={handleSubmit} className="min-h-screen flex flex-col bg-[#f8f4ee] text-[#4A4A4A]" >
             <HeaderComponent progress={10} />
 
             <div className="text-center mt-10 px-4 text-xl font-semibold">
-                {t.qs_which_pet_has}            
+                {t.qs_which_pet_has}
             </div>
 
-           {/* <div className="grid grid-cols-2 gap-4 px-6 mt-10 max-w-md mx-auto">
-            {options.map((opt, index) => (
- 
-               <button
-                  key={index}
-                  type="button"
-                  onClick={() => setSelected(opt)}
-                  className={`w-25 h-25 flex items-center justify-center rounded-lg text-2xl font-semibold cursor-pointer hover:opacity-90 transition ${
-                    
-                    getOptionStyle(
-                     opt
-                  )}`}
-               >
-                <Image  src="/dog.png"    alt=""  width={60}   height={60}    />
-               </button>
-            ))}
-         </div>   */}
+            {error && (
+                <p className="text-red-500 mb-2">Bitte wählen Sie eine Option aus</p>
+            )}
 
-         <div className="grid grid-cols-2 gap-4 px-6 mt-10 max-w-md mx-auto">
-            {/* Button 1 */}
-            <button  className={`w-25 h-25 flex items-center justify-center rounded-lg text-2xl font-semibold cursor-pointer hover:opacity-90 transition ${
-                    getOptionStyle(
-                     1
-                  )}`}
-             key={0} onClick={() => setSelected(1)}>
-            {/* 🐶 */}
-            <Image
-                    src="/dog.png"
-                    alt=""
-                    width={60}
-                    height={60}
-                />
-            </button>
+            <div className="grid grid-cols-2 gap-4 px-6 mt-10 max-w-md mx-auto">
+                {/* Button 1 */}
+                <button className={`w-25 h-25 flex items-center justify-center rounded-lg text-2xl font-semibold cursor-pointer hover:opacity-90 transition ${getOptionStyle(
+                    1
+                )}`}
+                    key={0} onClick={() => setSelected(1)}>
+                    {/* 🐶 */}
+                    <Image
+                        src="/dog.png"
+                        alt=""
+                        width={60}
+                        height={60}
+                    />
+                </button>
 
-            {/* Button 2 */}
-            <button className={`w-25 h-25 flex items-center justify-center rounded-lg text-2xl font-semibold cursor-pointer hover:opacity-90 transition ${
-                    getOptionStyle(
-                     2
-                  )}`}
-            key={1} onClick={() => setSelected(2)}>
-            {/* 🐱 */}
-            <Image
-                    src="/cat.png"
-                    alt=""
-                    width={60}
-                    height={60}
-                />
-            </button>
+                {/* Button 2 */}
+                <button className={`w-25 h-25 flex items-center justify-center rounded-lg text-2xl font-semibold cursor-pointer hover:opacity-90 transition ${getOptionStyle(
+                    2
+                )}`}
+                    key={1} onClick={() => setSelected(2)}>
+                    {/* 🐱 */}
+                    <Image
+                        src="/cat.png"
+                        alt=""
+                        width={60}
+                        height={60}
+                    />
+                </button>
 
-            {/* Button 3 */}
-            <button className={`w-25 h-25 flex items-center justify-center rounded-lg text-2xl font-semibold cursor-pointer hover:opacity-90 transition ${
-                    getOptionStyle(
-                     3
-                  )}`}
-            key={2} onClick={() => setSelected(3)}>
-            {/* <span>🐶</span>
+                {/* Button 3 */}
+                <button className={`w-25 h-25 flex items-center justify-center rounded-lg text-2xl font-semibold cursor-pointer hover:opacity-90 transition ${getOptionStyle(
+                    3
+                )}`}
+                    key={2} onClick={() => setSelected(3)}>
+                    {/* <span>🐶</span>
             <span>🐱</span> */}
-            <Image
-                    src="/dog.png"
-                    alt=""
-                    width={45}
-                    height={45}
-                />
-                <Image
-                    src="/cat.png"
-                    alt=""
-                    width={40}
-                    height={40}
-                />
-            </button>
+                    <Image
+                        src="/dog.png"
+                        alt=""
+                        width={45}
+                        height={45}
+                    />
+                    <Image
+                        src="/cat.png"
+                        alt=""
+                        width={40}
+                        height={40}
+                    />
+                </button>
 
-            {/* Button 4 */}
-            <button  className={`w-25 h-25 flex items-center justify-center rounded-lg text-2xl font-semibold cursor-pointer hover:opacity-90 transition ${
-                    getOptionStyle(
-                     4
-                  )}`}
-             key={3} onClick={() => setSelected(4)}   >
-            text
-            </button>
+                {/* Button 4 */}
+                <button className={`w-25 h-25 flex items-center justify-center rounded-lg text-2xl font-semibold cursor-pointer hover:opacity-90 transition ${getOptionStyle(
+                    4
+                )}`}
+                    key={3} onClick={() => setSelected(4)}   >
+                    text
+                </button>
 
-        </div>  
+            </div>
 
-          
 
-             
-        <FooterComponent onBack={handleBack} isSubmit />
+
+
+            <FooterComponent onBack={handleBack} isSubmit />
         </form>
     );
 }

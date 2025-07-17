@@ -71,7 +71,7 @@ export default function HasNotPet() {
          </div>
 
             {/* Footer */}
-            <FooterComponent backHref="/set-number-of-pet" nextHref="/hasnotpet" isSubmit />
+            <FooterComponent backHref="/" isSubmit />
         </form>
     );
 }
