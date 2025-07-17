@@ -9,19 +9,22 @@ import Image from 'next/image';
 
 export default function SetNumberOfPet() {
 
-    //const options = ["🐶", "🐱", "🐶🐱", "Text"];
-    const options = ["1", "2", "3", "4"];
-    const [selected, setSelected] = useState();
-    const [button_index, setButtonIndex] = useState();
+    const [selected, setSelected] = useState(null);
     const [error, setError] = useState(false);
 
-    const searchParams = useSearchParams();
     const router = useRouter();
 
     const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "EN";
     const t = langContent[lang];
 
-    const fromStep = searchParams.get("fromStep");
+    useEffect(() => {
+        // This runs only in the browser
+        const storedValue = sessionStorage.getItem('pet_type');
+        console.log(storedValue)
+        if (storedValue) {
+            setSelected(storedValue);
+        }
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -32,34 +35,23 @@ export default function SetNumberOfPet() {
             return;
         }
 
-        if (selected === 1) {
-            sessionStorage.setItem("pet_type", "Hund");
-            router.push("/has_pet/how_many");
-            return;
-        } else if (selected === 2) {
-            sessionStorage.setItem("pet_type", "Katze");
-            router.push("/has_pet/how_many");
-            return;
+        if (selected) {
+            console.log('Pet =', selected);
+            if (selected === '1') {
+                sessionStorage.setItem("pet_type", selected);
+                router.push("/has_pet/how_many");
+            } else if (selected === '2') {
+                sessionStorage.setItem("pet_type", selected);
+                router.push("/has_pet/how_many");
+            } else if (selected === '3') {
+                sessionStorage.setItem("pet_type", selected);
+                router.push("/has_pet/how_many");
+            } else {
+                sessionStorage.setItem("pet_type", selected);
+                // router.push("/has_pet/other");
+            }
         }
-        else if (selected === 3) {
-            sessionStorage.setItem("pet_type", "Hund und Katze");
-            router.push("/has_pet/how_many");
-            return;
-        }
-        else {
-            debugger;
-            sessionStorage.setItem("pet_type", "Anderes");
-            router.push("/has_pet/other");
-            return;
-        }
-
-
     };
-
-    const getButtonStyle = (option) =>
-        option === selected
-            ? "bg-white text-[#4A3A2D] border-2 border-[#4A3A2D]"
-            : "bg-[#4A3A2D] text-white";
 
     const handleBack = () => {
         router.push("/");
@@ -79,15 +71,16 @@ export default function SetNumberOfPet() {
             </div>
 
             {error && (
-                <p className="text-red-500 mb-2">Bitte wählen Sie eine Option aus</p>
+                <p className="text-red-500 text-center mb-2">Bitte wählen Sie eine Option aus</p>
             )}
 
             <div className="grid grid-cols-2 gap-4 px-6 mt-10 max-w-md mx-auto">
                 {/* Button 1 */}
                 <button className={`w-25 h-25 flex items-center justify-center rounded-lg text-2xl font-semibold cursor-pointer hover:opacity-90 transition ${getOptionStyle(
-                    1
+                    '1'
                 )}`}
-                    key={0} onClick={() => setSelected(1)}>
+                    type="button"
+                    key={0} onClick={() => setSelected('1')}>
                     {/* 🐶 */}
                     <Image
                         src="/dog.png"
@@ -99,9 +92,10 @@ export default function SetNumberOfPet() {
 
                 {/* Button 2 */}
                 <button className={`w-25 h-25 flex items-center justify-center rounded-lg text-2xl font-semibold cursor-pointer hover:opacity-90 transition ${getOptionStyle(
-                    2
+                    '2'
                 )}`}
-                    key={1} onClick={() => setSelected(2)}>
+                    type="button"
+                    key={1} onClick={() => setSelected('2')}>
                     {/* 🐱 */}
                     <Image
                         src="/cat.png"
@@ -113,9 +107,10 @@ export default function SetNumberOfPet() {
 
                 {/* Button 3 */}
                 <button className={`w-25 h-25 flex items-center justify-center rounded-lg text-2xl font-semibold cursor-pointer hover:opacity-90 transition ${getOptionStyle(
-                    3
+                    '3'
                 )}`}
-                    key={2} onClick={() => setSelected(3)}>
+                    type="button"
+                    key={2} onClick={() => setSelected('3')}>
                     {/* <span>🐶</span>
             <span>🐱</span> */}
                     <Image
@@ -134,16 +129,14 @@ export default function SetNumberOfPet() {
 
                 {/* Button 4 */}
                 <button className={`w-25 h-25 flex items-center justify-center rounded-lg text-2xl font-semibold cursor-pointer hover:opacity-90 transition ${getOptionStyle(
-                    4
+                    '4'
                 )}`}
-                    key={3} onClick={() => setSelected(4)}   >
+                    type="button"
+                    key={3} onClick={() => setSelected('4')}   >
                     text
                 </button>
 
             </div>
-
-
-
 
             <FooterComponent onBack={handleBack} isSubmit />
         </form>

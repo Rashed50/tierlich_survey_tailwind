@@ -36,7 +36,7 @@ export default function SetNumberOfPet() {
          return;
       }
 
-       sessionStorage.setItem("number_of_pets", selected);
+      sessionStorage.setItem("number_of_pets", selected);
 
       if (selected === "0") {
          router.push("/hasnotpet");
