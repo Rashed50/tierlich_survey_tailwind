@@ -44,6 +44,8 @@ export const langContent = {
      
   },
 
+  
+
 
   EN: {
     title: "animalistic.",
