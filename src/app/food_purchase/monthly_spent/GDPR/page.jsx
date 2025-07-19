@@ -22,7 +22,7 @@ export default function SetNumberOfPet() {
          const storedValue = sessionStorage.getItem('number_of_pets');
          console.log(storedValue)
          if (storedValue) {
-          //  setSelected(storedValue);
+         //   setSelected(storedValue);
          }
       }
    }, []);
@@ -36,14 +36,16 @@ export default function SetNumberOfPet() {
          return;
       }
 
-      sessionStorage.setItem("number_of_pets", selected);
+      // sessionStorage.setItem("number_of_pets", selected);
 
-      if (selected === "0") {
-         router.push("/hasnotpet");
+       debugger;
+      if (selected === "0") { 
+         // no button clicked
+             router.push("/share_link");
          return;
       } else {
-         // yes has pet            
-         router.push("/has_pet");
+         // yes            
+         router.push("/food_purchase/monthly_spent/owner_info");
       }
 
    };
@@ -59,9 +61,9 @@ export default function SetNumberOfPet() {
          <HeaderComponent progress={10} />
 
          {/* Question Text */}
-         <div className="text-center mt-10 px-4 text-xl font-semibold">
-            {/* {t.question1}             */}
-            {"Hast du Haustiere?"}
+         <div className="text-center mt-10 ml-30 mr-30 px-4 text-xl font-semibold">
+            {t.info_gdpr_rules}            
+  
          </div>
 
          {/* Answer Buttons */}
@@ -71,9 +73,9 @@ export default function SetNumberOfPet() {
                <p className="text-red-500 mb-2">Bitte wählen Sie eine Option aus</p>
             )}
 
-            <button
+             <button
                type="button"
-               onClick={() => setSelected("1")} // ✅ Yes
+               onClick={() => setSelected("1")} // ✅ Stationary
                className={`w-full max-w-xs h-14 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
                   "1"
                )}`}
@@ -82,7 +84,7 @@ export default function SetNumberOfPet() {
             </button>
             <button
                type="button"
-               onClick={() => setSelected("0")} // ✅ No
+               onClick={() => setSelected("0")} // ✅ Online
                className={`w-full max-w-xs h-14 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
                   "0"
                )}`}
@@ -94,7 +96,7 @@ export default function SetNumberOfPet() {
 
 
          {/* Footer */}
-         <FooterComponent isSubmit />
+         <FooterComponent backHref={"food_purchase/monthly_spent/interested_food_box"}  isSubmit />
       </form>
    );
 }

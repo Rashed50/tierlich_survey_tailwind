@@ -5,7 +5,7 @@ import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
 
-export default function SetNumberOfPet() {
+export default function PurchaseInterval() {
     const [selected, setSelected] = useState();
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -23,11 +23,10 @@ export default function SetNumberOfPet() {
       //   }
 
        //  sessionStorage.setItem("number_of_pets", selected);
-
-         router.push("/food_purchase/stationary/purchase_interval");
+         router.push("/food_purchase/stationary/obstacles");
 
          // if (selected === "0") {
-         //    router.push("/hasnotpet");
+         //    router.push("/food_purchase/stationary/obstacles");
          //    return;
          // }else {
          //  //           
@@ -48,79 +47,54 @@ export default function SetNumberOfPet() {
 
               {/* Question Text */}
          <div className="text-center mt-10 px-4 text-xl font-semibold">
-            {t.qs_food_purchase_stationary}            
+            {t.qs_food_purchase_interval}            
           </div>
 
          {/* Answer Buttons */}
          <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
 
-
-            <button type="button"
-               onClick={() => setSelected("Fachmarkt (Bsp. Fressnapf)")} // ✅ Yes
+ 
+            <button  type="button"
+               onClick={() => setSelected("2 Mal in der Woche")} // ✅ No
                className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Fachmarkt (Bsp. Fressnapf)"
+                  "2 Mal in der Woche"
                )}`}
             >
-               {"Fachmarkt (Bsp. Fressnapf)"}
-            </button>
-
-            <button type="button"
-               onClick={() => setSelected("Supermarkt/Discounter")} // ✅ Yes
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Supermarkt/Discounter"
-               )}`}
-            >
-               {"Supermarkt/Discounter"}
+               {"2 Mal in der Woche"}
             </button>
 
             <button  type="button"
-               onClick={() => setSelected("Tierarzt/Tierpraxen")} // ✅ No
+               onClick={() => setSelected("1 Mal in der Woche")} // ✅ No
                className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Tierarzt/Tierpraxen"
+                  "1 Mal in der Woche"
                )}`}
             >
-               {"Tierarzt/Tierpraxen"}
+               {"1 Mal in der Woche"}
             </button>
 
             <button  type="button"
-               onClick={() => setSelected("Baumarkt")} // ✅ No
+               onClick={() => setSelected("Alle 2 Wochen")} // ✅ No
                className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Baumarkt"
+                  "Alle 2 Wochen"
                )}`}
             >
-               {"Baumarkt"}
-            </button>
-
-            <button  type="button"
-               onClick={() => setSelected("Zoofachhandel")} // ✅ No
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Zoofachhandel"
-               )}`}
-            >
-               {"Zoofachhandel"}
+               {"Alle 2 Wochen"}
             </button>
             <button  type="button"
-               onClick={() => setSelected("auf Bauernhöfen")} // ✅ No
+               onClick={() => setSelected("1 Mal im Monat")} // ✅ No
                className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "auf Bauernhöfen"
+                  "1 Mal im Monat"
                )}`}
             >
-               {"auf Bauernhöfen"}
+               {"1 Mal im Monat"}
             </button>
-
-
-
-
-
-
 
 
          </div>
 
-                
-
+              
             {/* Footer */}
-            <FooterComponent backHref="/food_purchase/stationary" nextHref="/food_purchase/stationary/purchase_interval" isSubmit />
+            <FooterComponent backHref="food_purchase/stationary" nextHref="/food_purchase/stationary/obstacles" isSubmit />
         </form>
     );
 }

@@ -24,7 +24,7 @@ export default function SetNumberOfPet() {
 
        //  sessionStorage.setItem("number_of_pets", selected);
 
-         router.push("/food_purchase/stationary/purchase_interval");
+         router.push("/food_purchase/monthly_spent");
 
          // if (selected === "0") {
          //    router.push("/hasnotpet");
@@ -48,79 +48,71 @@ export default function SetNumberOfPet() {
 
               {/* Question Text */}
          <div className="text-center mt-10 px-4 text-xl font-semibold">
-            {t.qs_food_purchase_stationary}            
+            {t.qs_food_purchase_stationary_obstacles}            
           </div>
 
          {/* Answer Buttons */}
          <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
 
 
-            <button type="button"
-               onClick={() => setSelected("Fachmarkt (Bsp. Fressnapf)")} // ✅ Yes
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Fachmarkt (Bsp. Fressnapf)"
-               )}`}
-            >
-               {"Fachmarkt (Bsp. Fressnapf)"}
-            </button>
 
             <button type="button"
-               onClick={() => setSelected("Supermarkt/Discounter")} // ✅ Yes
+               onClick={() => setSelected("Begrenzte Öffnungszeiten")} // ✅ Yes
                className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Supermarkt/Discounter"
+                  "Begrenzte Öffnungszeiten"
                )}`}
             >
-               {"Supermarkt/Discounter"}
+               {"Begrenzte Öffnungszeiten"}
+            </button>
+            <button type="button"
+               onClick={() => setSelected("ein automatischer Nachschub")} // ✅ Yes
+               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
+                  "ein automatischer Nachschub"
+               )}`}
+            >
+               {"ein automatischer Nachschub"}
+            </button>
+
+            <button type="button"
+               onClick={() => setSelected("Schleppen und Treppen steigen")} // ✅ Yes
+               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
+                  "Schleppen und Treppen steigen"
+               )}`}
+            >
+               {"Schleppen und Treppen steigen"}
             </button>
 
             <button  type="button"
-               onClick={() => setSelected("Tierarzt/Tierpraxen")} // ✅ No
+               onClick={() => setSelected("Hohe Preise")} // ✅ No
                className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Tierarzt/Tierpraxen"
+                  "Hohe Preise"
                )}`}
             >
-               {"Tierarzt/Tierpraxen"}
+               {"Hohe Preise"}
             </button>
 
             <button  type="button"
-               onClick={() => setSelected("Baumarkt")} // ✅ No
+               onClick={() => setSelected("man vergisst mal was")} // ✅ No
                className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Baumarkt"
+                  "man vergisst mal was"
                )}`}
             >
-               {"Baumarkt"}
+               {"man vergisst mal was"}
             </button>
 
             <button  type="button"
-               onClick={() => setSelected("Zoofachhandel")} // ✅ No
+               onClick={() => setSelected("sonstige (true=Textfield)")} // ✅ No
                className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Zoofachhandel"
+                  "sonstige (true=Textfield)"
                )}`}
             >
-               {"Zoofachhandel"}
-            </button>
-            <button  type="button"
-               onClick={() => setSelected("auf Bauernhöfen")} // ✅ No
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "auf Bauernhöfen"
-               )}`}
-            >
-               {"auf Bauernhöfen"}
-            </button>
-
-
-
-
-
-
-
-
+               {"sonstige (true=Textfield)"}
+            </button>            
          </div>
-
-                
+               
 
             {/* Footer */}
-            <FooterComponent backHref="/food_purchase/stationary" nextHref="/food_purchase/stationary/purchase_interval" isSubmit />
+            <FooterComponent backHref="/food_purchase/stationary/purchase_interval" nextHref="/food_purchase/monthly_spent" isSubmit />
         </form>
     );
 }

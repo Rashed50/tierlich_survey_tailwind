@@ -36,14 +36,15 @@ export default function SetNumberOfPet() {
          return;
       }
 
-      sessionStorage.setItem("number_of_pets", selected);
+       sessionStorage.setItem("number_of_pets", selected);
 
       if (selected === "0") {
-         router.push("/hasnotpet");
+             // go to share link
+             router.push("/share_link");
          return;
       } else {
          // yes has pet            
-         router.push("/has_pet");
+          router.push("/food_purchase/monthly_spent/GDPR");
       }
 
    };
@@ -59,9 +60,9 @@ export default function SetNumberOfPet() {
          <HeaderComponent progress={10} />
 
          {/* Question Text */}
-         <div className="text-center mt-10 px-4 text-xl font-semibold">
-            {/* {t.question1}             */}
-            {"Hast du Haustiere?"}
+         <div className="text-center mt-10 ml-30 mr-30 px-4 text-xl font-semibold">
+            {t.qs_interested_in_buying_individual_food_box}            
+  
          </div>
 
          {/* Answer Buttons */}
@@ -94,7 +95,7 @@ export default function SetNumberOfPet() {
 
 
          {/* Footer */}
-         <FooterComponent isSubmit />
+         <FooterComponent backHref={"/food_purchase/monthly_spent/living_location"}  isSubmit />
       </form>
    );
 }

@@ -36,15 +36,9 @@ export default function SetNumberOfPet() {
          return;
       }
 
-      sessionStorage.setItem("number_of_pets", selected);
-
-      if (selected === "0") {
-         router.push("/hasnotpet");
+         router.push("/share_link");
          return;
-      } else {
-         // yes has pet            
-         router.push("/has_pet");
-      }
+     
 
    };
 
@@ -58,43 +52,47 @@ export default function SetNumberOfPet() {
       <form onSubmit={handleSubmit} className="min-h-screen flex flex-col bg-[#f8f4ee] text-[#4A4A4A]">
          <HeaderComponent progress={10} />
 
-         {/* Question Text */}
-         <div className="text-center mt-10 px-4 text-xl font-semibold">
-            {/* {t.question1}             */}
-            {"Hast du Haustiere?"}
-         </div>
-
+        
          {/* Answer Buttons */}
-         <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
+         <div className="flex flex-col gap-2 items-center justify-center mt-10 px-4">
 
             {error && (
                <p className="text-red-500 mb-2">Bitte wählen Sie eine Option aus</p>
             )}
 
-            <button
-               type="button"
-               onClick={() => setSelected("1")} // ✅ Yes
-               className={`w-full max-w-xs h-14 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "1"
-               )}`}
-            >
-               {"Ja"}
-            </button>
-            <button
-               type="button"
-               onClick={() => setSelected("0")} // ✅ No
-               className={`w-full max-w-xs h-14 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "0"
-               )}`}
-            >
-               {"Nein"}
-            </button>
+         <div className="flex flex-col gap-1 items-center justify-center mt-10 px-4">
+            
+            <p className="text-black-500 mb-2">Wie heißt du?</p>
+            <input
+               type="text"
+               // value={""}
+               // onChange={(e) => setText(e.target.value)}
+               placeholder="Enter Ihr Name"
+               className="w-full max-w-xs h-10 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+            />
+ 
+
+         </div>
+
+         <div className="flex flex-col gap-1 items-center justify-center mt-10 px-4">
+            <p className="text-black-500 mb-2">Wie is Ihre E-Mail Adresse?</p>
+            <input
+               type="text"
+               // value={""}
+               // onChange={(e) => setText(e.target.value)}
+               placeholder="Enter E-mail Adresse"
+               className="w-full max-w-xs h-10 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+            />
+ 
+
+         </div>
+
          </div>
 
 
 
          {/* Footer */}
-         <FooterComponent isSubmit />
+         <FooterComponent backHref={"/food_purchase/monthly_spent/GDPR"} isSubmit />
       </form>
    );
 }

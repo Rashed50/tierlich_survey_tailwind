@@ -23,14 +23,14 @@ export default function HasNotPet() {
 
        //  sessionStorage.setItem("number_of_pets", selected);
  
-        debugger;
-        if (selected === "0") {
-            router.push("/hasnotpet/pet_type");
+        // debugger;
+        // if (selected === "0") {
+        //     router.push("/hasnotpet/pet_type");
             
-            return;
-        }else {
-            router.push("/hasnotpet");
-        }
+        //     return;
+        
+        router.push("/");
+        
        
     };
 
@@ -58,7 +58,7 @@ export default function HasNotPet() {
             
 
             {/* Footer */}
-            <FooterComponent backHref="/set-number-of-pet" nextHref="/hasnotpet" isSubmit />
+            <FooterComponent backHref="/set-number-of-pet" nextHref="/" isSubmit />
         </form>
     );
 }

@@ -15,16 +15,16 @@ export default function HasNotPet() {
 
     
     const handleSubmit = (e) => {
-      //   e.preventDefault();
-      //   if (!selected) {
-      //       setError(true);
-      //       return;
-      //   }
- 
-      router.push("/hasnotpet/no");
-       return;
-            
-      
+        e.preventDefault();
+        if (!selected) {
+            setError(true);
+            return;
+        }
+
+       //  sessionStorage.setItem("number_of_pets", selected);
+  
+        router.push("/share_link");
+        
        
     };
 
@@ -44,15 +44,31 @@ export default function HasNotPet() {
              
          </div>
 
-         {/* Answer Buttons */}
-         <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
-            {"Pfotenstarke Wahl – da wirst du garantiert nicht dran knabbern! Melde dich einfach bei uns, wenn’s Zeit für dein neues Revier-Equipment ist!"}
+        <div className="flex flex-col-2 gap-0 items-center justify-center mt-10 px-4">
+  
+            <input
+            type="text"
+            // value={""}
+            // onChange={(e) => setText(e.target.value)}
+            placeholder="Shared link will be here"
+            className="w-full max-w-xs h-10 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+            />
+
+            <button
+               type="button"
+               onClick={() => setSelected("1")} // ✅ No
+               className={`w-30 max-w-xs h-10 text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
+                  "1"
+               )}`}
+            >
+               {"kopieren"}
+            </button>
+ 
+
          </div>
 
-            
-
             {/* Footer */}
-            <FooterComponent backHref="/set-number-of-pet"  isSubmit />
+            <FooterComponent backHref="/food_purchase/monthly_spent/owner_info" nextHref="/share_link" isSubmit />
         </form>
     );
 }
