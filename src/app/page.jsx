@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
+import supabase from "@/config/supabaseClient";
 
 export default function SetNumberOfPet() {
    const [selected, setSelected] = useState();
@@ -38,6 +39,8 @@ export default function SetNumberOfPet() {
 
       sessionStorage.setItem("number_of_pets", selected);
 
+      saveInformationInServer(); // save information in Server
+
       if (selected === "0") {
          router.push("/hasnotpet");
          return;
@@ -52,6 +55,20 @@ export default function SetNumberOfPet() {
       option === selected
          ? "bg-white text-[#4A3A2D] border-2 border-[#4A3A2D]"
          : "bg-[#4A3A2D] text-white";
+
+
+
+
+ // =================== database action ==========================
+  const [owner_name, setOwnerName] = useState('annonymous user');
+  const [email, setEmail] = useState('annonymous@gmail.com');
+  const [number_of_pet, setNumberOfPet] = useState(1);
+
+    const saveInformationInServer  = async () => {
+        alert(owner_name + " " + email + " " + number_of_pet);
+       const { data, error } = await supabase.from('pet_owners').insert([{owner_name,email,number_of_pet}]);
+     
+    };
 
 
    return (
