@@ -98,7 +98,8 @@ export default function SetNumberOfPet() {
     const getProgressText = () => {
         const petKeys = Object.keys(petNames);
         if (currentPetIndex < petKeys.length) {
-            return `Enter name for ${getCurrentPetType()} ${currentPetIndex + 1} of ${petKeys.length}`;
+            // return `Enter name for ${getCurrentPetType()} ${currentPetIndex + 1} of ${petKeys.length}`;
+            return `Enter name for ${currentPetIndex + 1} of ${petKeys.length}`;
         }
         return "All pet names collected";
     };

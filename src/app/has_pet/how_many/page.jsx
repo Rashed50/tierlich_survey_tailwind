@@ -52,6 +52,11 @@ export default function HasNotPet() {
             return;
         }
 
+        if (selected === "Mehr als 3") {
+            router.push("/food_purchase");
+            return;
+        }
+
         if (pet_type === "Hund und Katze") {
             if (step === 1) {
                 // Store dog count and move to cat count selection
@@ -128,7 +133,7 @@ export default function HasNotPet() {
 
             {/* Options */}
             <div className="flex flex-col gap-3 max-w-md mx-auto w-full px-4 mt-10">
-                {["1", "2", "3", "4"].map((opt, idx) => (
+                {["1", "2", "3", "Mehr als 3"].map((opt, idx) => (
                     <button
                         key={idx}
                         type="button"
