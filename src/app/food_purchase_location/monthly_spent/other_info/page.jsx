@@ -5,7 +5,7 @@ import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
 
-export default function HasNotPet() {
+export default function SetNumberOfPet() {
    const [selected, setSelected] = useState();
    const searchParams = useSearchParams();
    const router = useRouter();
@@ -13,16 +13,18 @@ export default function HasNotPet() {
    const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "DE";
    const t = langContent[lang];
 
+   const no_of_pet = sessionStorage.getItem("number_of_pets");
+
    const handleSubmit = (e) => {
       e.preventDefault();
-      if (!selected) {
-         setError(true);
-         return;
-      }
+      //   if (!selected) {
+      //       setError(true);
+      //       return;
+      //   }
 
       //  sessionStorage.setItem("number_of_pets", selected);
 
-      router.push("/share_link");
+      router.push("/food_purchase_location/monthly_spent/living_location");
    };
 
    const getButtonStyle = (option) =>
@@ -35,37 +37,30 @@ export default function HasNotPet() {
          onSubmit={handleSubmit}
          className="min-h-screen flex flex-col bg-[#f8f4ee] text-[#4A4A4A]"
       >
-         <HeaderComponent progress={95} />
+         <HeaderComponent progress={60} />
 
          {/* Question Text */}
          <div className="text-center mt-10 px-4 text-xl font-semibold">
-            {"Vielen Dank für deine Teilnahme."}
+            {no_of_pet == "1"
+               ? t.qs_other_info_for_1_pet
+               : t.qs_other_info_for_2ormore_pets}
          </div>
 
-         <div className="flex flex-col-2 gap-0 items-center justify-center mt-10 px-4">
+         {/* Answer Buttons */}
+         <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
             <input
                type="text"
                // value={""}
                // onChange={(e) => setText(e.target.value)}
-               placeholder="Shared link will be here"
+               placeholder="Enter additional information"
                className="w-full max-w-xs h-10 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
             />
-
-            <button
-               type="button"
-               onClick={() => setSelected("1")} // ✅ No
-               className={`w-30 max-w-xs h-10 text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "1"
-               )}`}
-            >
-               {"kopieren"}
-            </button>
          </div>
 
          {/* Footer */}
          <FooterComponent
-            backHref="/food_purchase_location/monthly_spent/owner_info"
-            nextHref="/share_link"
+            backHref="/food_purchase_location"
+            nextHref="/food_purchase_location/monthly_spent/living_location"
             isSubmit
          />
       </form>
