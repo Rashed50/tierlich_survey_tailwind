@@ -64,9 +64,13 @@ export default function SetNumberOfPet() {
   const [email, setEmail] = useState('annonymous@gmail.com');
   const [number_of_pet, setNumberOfPet] = useState(1);
 
-    const saveInformationInServer  = async () => {
-        alert(owner_name + " " + email + " " + number_of_pet);
-       const { data, error } = await supabase.from('pet_owners').insert([{owner_name,email,number_of_pet}]);
+    const saveInformationInServer  = async () => { 
+       const { data, error } = await supabase.from('pet_owners').insert([{owner_name,email,number_of_pet}]).select();
+       if(error == null && data){
+            var new_row = data[0];
+            sessionStorage.setItem("pet_owner_id", new_row['id']);
+       }      
+    
      
     };
 
