@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
+import supabase from "@/config/supabaseClient";
 
 export default function HasNotPet() {
    const [selected, setSelected] = useState();
@@ -42,6 +43,8 @@ export default function HasNotPet() {
             setSelected(storedPetNumber);
          }
       }
+
+      
    }, []);
 
    const handleSubmit = (e) => {
@@ -57,7 +60,10 @@ export default function HasNotPet() {
          return;
       }
 
+     
+
       if (pet_type === "Hund und Katze") {
+
          if (step === 1) {
             // Store dog count and move to cat count selection
             const petData = { dog: selected };
@@ -78,6 +84,7 @@ export default function HasNotPet() {
                type: "Hund und Katze",
             };
             sessionStorage.setItem("pet_number", JSON.stringify(petData));
+             updateOwnerNumberOfPetsServerInformation(selected);
             router.push("/input-pet-name");
          }
       } else {
@@ -87,6 +94,7 @@ export default function HasNotPet() {
             type: pet_type,
          };
          sessionStorage.setItem("pet_number", JSON.stringify(petData));
+         updateOwnerNumberOfPetsServerInformation(selected);
          router.push("/input-pet-name");
       }
    };
@@ -104,6 +112,17 @@ export default function HasNotPet() {
       }
       setError(false);
    };
+
+
+
+   const updateOwnerNumberOfPetsServerInformation  = async (number_of_pet) => {
+
+ 
+       const pet_onwer_id = sessionStorage.getItem("pet_owner_id");
+       const { data, error } = await supabase.from('pet_owners').update([{number_of_pet:number_of_pet}]).eq('id',pet_onwer_id);
+       console.log(data)
+     
+    };
 
    const getOptionStyle = (option) =>
       option === selected

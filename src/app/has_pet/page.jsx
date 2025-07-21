@@ -5,7 +5,7 @@ import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
 import Image from 'next/image';
-
+import supabase from "@/config/supabaseClient";
 
 export default function SetNumberOfPet() {
 
@@ -35,23 +35,41 @@ export default function SetNumberOfPet() {
             return;
         }
 
+        var pet_type_id = 1; // Hund
+
         if (selected) {
             console.log('Pet =', selected);
+
             if (selected === '1') {
                 sessionStorage.setItem("pet_type", selected);
                 router.push("/has_pet/how_many");
             } else if (selected === '2') {
+                pet_type_id = 2;  // Katze
                 sessionStorage.setItem("pet_type", selected);
                 router.push("/has_pet/how_many");
             } else if (selected === '3') {
+                pet_type_id = 3; // Katze und Hund
                 sessionStorage.setItem("pet_type", selected);
                 router.push("/has_pet/how_many");
             } else {
+               
                 sessionStorage.setItem("pet_type", selected);
                 // router.push("/has_pet/other");
             }
+            updateOwnerPetTypeServerInformation(pet_type_id)
         }
     };
+
+    
+    
+   const updateOwnerPetTypeServerInformation  = async (pet_type) => {
+ 
+       const pet_onwer_id = sessionStorage.getItem("pet_owner_id");
+       const { data, error } = await supabase.from('pet_owners').update([{pet_type_id:pet_type}]).eq('id',pet_onwer_id);
+     
+    };
+
+
 
     const handleBack = () => {
         router.push("/");
