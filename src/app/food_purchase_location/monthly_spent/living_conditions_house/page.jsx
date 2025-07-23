@@ -6,24 +6,29 @@ import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
 
 export default function SetNumberOfPet() {
-   const [selected, setSelected] = useState();
-   const searchParams = useSearchParams();
    const router = useRouter();
+   const searchParams = useSearchParams();
+   const [selected, setSelected] = useState();
+   const [error, setError] = useState(false);
 
    const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "DE";
    const t = langContent[lang];
 
    const handleSubmit = (e) => {
       e.preventDefault();
-      //   if (!selected) {
-      //       setError(true);
-      //       return;
-      //   }
-
+      if (!selected) {
+         setError(true);
+         return;
+      }
+      setError(false);
+      console.log("Selected option:", selected);
       //  sessionStorage.setItem("number_of_pets", selected);
-
-      router.push("/food_purchase_location/monthly_spent/family_status");
+      router.push("/food_purchase_location/monthly_spent/living_situation_family");
    };
+
+   const handleBack = () => {
+      router.push("/food_purchase_location/monthly_spent/lead_age");
+   }
 
    const getButtonStyle = (option) =>
       option === selected
@@ -41,6 +46,12 @@ export default function SetNumberOfPet() {
          <div className="text-center mt-10 px-4 text-xl font-semibold">
             {t.qs_pet_living_location}
          </div>
+
+         {error && (
+            <p className="text-red-500 text-center mb-2">   
+               Bitte wählen Sie eine Option aus
+            </p>
+         )}
 
          {/* Answer Buttons */}
          <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
@@ -75,11 +86,7 @@ export default function SetNumberOfPet() {
          </div>
 
          {/* Footer */}
-         <FooterComponent
-            backHref="/food_purchase_location/monthly_spent"
-            nextHref="/food_purchase_location/monthly_spent/family_status"
-            isSubmit
-         />
+         <FooterComponent onBack={handleBack} isSubmit />
       </form>
    );
 }

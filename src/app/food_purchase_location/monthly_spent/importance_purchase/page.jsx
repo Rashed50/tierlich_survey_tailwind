@@ -6,23 +6,29 @@ import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
 
 export default function SetNumberOfPet() {
-   const [selected, setSelected] = useState();
-   const searchParams = useSearchParams();
    const router = useRouter();
+   const searchParams = useSearchParams();
+
+   const [selected, setSelected] = useState();
+   const [error, setError] = useState(false);
 
    const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "DE";
    const t = langContent[lang];
 
    const handleSubmit = (e) => {
       e.preventDefault();
-      //   if (!selected) {
-      //       setError(true);
-      //       return;
-      //   }
-
+      if (!selected) {
+         setError(true);
+         return;
+      }
+      setError(false);
+      console.log("Selected option:", selected);
       //  sessionStorage.setItem("number_of_pets", selected);
+      router.push("/food_purchase_location/monthly_spent/lead_age");
+   };
 
-      router.push("/food_purchase_location/monthly_spent/other_info");
+   const handleBack = () => {
+      router.push("/food_purchase_location/monthly_spent/");
    };
 
    const getButtonStyle = (option) =>
@@ -39,46 +45,69 @@ export default function SetNumberOfPet() {
 
          {/* Question Text */}
          <div className="text-center mt-10 px-4 text-xl font-semibold">
-            {t.qs_pet_owner_family_statu}
+            {t.qs_important_purchase_feature}
          </div>
+
+         {error && (
+            <p className="text-red-500 text-center mb-2">
+               Bitte wählen Sie eine Option aus
+            </p>
+         )}      
 
          {/* Answer Buttons */}
          <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
             <button
                type="button"
-               onClick={() => setSelected("Nein ,Single Haushalt")} // ✅ No
+               onClick={() => setSelected("Preis")} // ✅ No
                className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Nein ,Single Haushalt"
+                  "Preis"
                )}`}
             >
-               {"Nein ,Single Haushalt"}
+               {"Preis"}
             </button>
 
             <button
                type="button"
-               onClick={() => setSelected("Haushalt mit Partner")} // ✅ No
+               onClick={() => setSelected("Qualität")} // ✅ No
                className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Haushalt mit Partner"
+                  "Qualität"
                )}`}
             >
-               {"Haushalt mit Partner"}
+               {"Qualität"}
+            </button>
+
+            <button
+               type="button"
+               onClick={() => setSelected("Nachhaltigkeit")} // ✅ No
+               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
+                  "Nachhaltigkeit"
+               )}`}
+            >
+               {"Nachhaltigkeit"}
+            </button>
+
+            <button
+               type="button"
+               onClick={() => setSelected("Marke")} // ✅ No
+               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
+                  "Marke"
+               )}`}
+            >
+               {"Marke"}
             </button>
             <button
                type="button"
-               onClick={() => setSelected("Haushalt mit Kindern")} // ✅ No
+               onClick={() => setSelected("sonstige")} // ✅ No
                className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Haushalt mit Kindern"
+                  "sonstige"
                )}`}
             >
-               {"Haushalt mit Kindern"}
+               {"sonstige (true=textfield)"}
             </button>
          </div>
 
          {/* Footer */}
-         <FooterComponent
-            backHref="/food_purchase_location/qs_what_do_you_feed"
-            nextHref="/food_purchase_location/monthly_spent/other_info"
-            isSubmit
+         <FooterComponent onBack={handleBack} isSubmit
          />
       </form>
    );

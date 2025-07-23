@@ -22,7 +22,7 @@ export default function SetNumberOfPet() {
       setError(false);
       console.log("Selected option:", selected);
       //  sessionStorage.setItem("number_of_pets", selected);
-      router.push("//food_purchase_location/online_competitor/online_cons");
+      router.push("/food_purchase_location/online_competitor/online_cons");
 
       // if (selected === "0") {
       //    router.push("/hasnotpet");

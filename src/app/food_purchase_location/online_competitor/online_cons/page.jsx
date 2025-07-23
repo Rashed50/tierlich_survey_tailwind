@@ -22,11 +22,11 @@ export default function SetNumberOfPet() {
       setError(false);
       console.log("Selected option:", selected);
       // sessionStorage.setItem("number_of_pets", selected);
-      // router.push("//food_purchase_location/online_competitor/online_pros");
+      router.push("/food_purchase_location/monthly_spent?from=online");
    };
 
    const handleBack = () => {
-      router.push("//food_purchase_location/online_competitor/online_pros");
+      // router.push("/food_purchase_location/online_competitor/online_pros");
    };
 
    const getButtonStyle = (option) =>
