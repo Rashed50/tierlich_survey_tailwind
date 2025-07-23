@@ -41,6 +41,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+*yarn.lock
+*package-lock.json
+
 
 test.jsx
 test.json
