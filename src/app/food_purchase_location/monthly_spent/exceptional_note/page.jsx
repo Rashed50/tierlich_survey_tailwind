@@ -7,6 +7,7 @@ import { langContent } from "@/lib/langContent";
 
 export default function SetNumberOfPet() {
    const [selected, setSelected] = useState();
+   const [error, setError] = useState(false);
    const searchParams = useSearchParams();
    const router = useRouter();
 
@@ -17,14 +18,22 @@ export default function SetNumberOfPet() {
 
    const handleSubmit = (e) => {
       e.preventDefault();
-      //   if (!selected) {
-      //       setError(true);
-      //       return;
-      //   }
+      // if (!selected) {
+      //    setError(true);
+      //    return;
+      // }
+      // setError(false);
+      // console.log("Selected option:", selected);
 
-      //  sessionStorage.setItem("number_of_pets", selected);
+      // sessionStorage.setItem("number_of_pets", selected);
 
-      router.push("/food_purchase_location/monthly_spent/interested_food_box");
+      router.push("/food_purchase_location/monthly_spent/lead_PLZ");
+   };
+
+   const handleBack = () => {
+      router.push(
+         "/food_purchase_location/monthly_spent/living_situation_family"
+      );
    };
 
    const getButtonStyle = (option) =>
@@ -41,8 +50,16 @@ export default function SetNumberOfPet() {
 
          {/* Question Text */}
          <div className="text-center mt-10 px-4 text-xl font-semibold">
-            {t.qs_pet_owner_living_location}
+            {no_of_pet == "1"
+               ? t.qs_other_info_for_1_pet
+               : t.qs_other_info_for_2ormore_pets}
          </div>
+
+         {error && (
+            <p className="text-red-500 text-center mb-2">
+               Bitte wählen Sie eine Option aus
+            </p>
+         )}
 
          {/* Answer Buttons */}
          <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
@@ -50,17 +67,13 @@ export default function SetNumberOfPet() {
                type="text"
                // value={""}
                // onChange={(e) => setText(e.target.value)}
-               placeholder="Enter Ihr PLZ information"
+               placeholder="Enter additional information"
                className="w-full max-w-xs h-10 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
             />
          </div>
 
          {/* Footer */}
-         <FooterComponent
-            backHref="/food_purchase_location/monthly_spent/living_location"
-            nextHref="/food_purchase_location/monthly_spent/interested_food_box"
-            isSubmit
-         />
+         <FooterComponent onBack={handleBack} isSubmit />
       </form>
    );
 }

@@ -36,7 +36,7 @@ export default function SetNumberOfPet() {
    };
 
    const handleBack = () => {
-      router.push("//food_purchase_location/online_competitor/");
+      router.push("/food_purchase_location/online_competitor/");
    };
 
    const getButtonStyle = (option) =>

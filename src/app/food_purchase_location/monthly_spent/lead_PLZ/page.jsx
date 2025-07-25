@@ -24,8 +24,12 @@ export default function SetNumberOfPet() {
 
       //  sessionStorage.setItem("number_of_pets", selected);
 
-      router.push("/food_purchase_location/monthly_spent/living_location");
+      router.push("/food_purchase_location/monthly_spent/lead_interested");
    };
+
+   const handleBack = () => {
+      router.push("/food_purchase_location/monthly_spent/exceptional_note");
+   }
 
    const getButtonStyle = (option) =>
       option === selected
@@ -41,9 +45,7 @@ export default function SetNumberOfPet() {
 
          {/* Question Text */}
          <div className="text-center mt-10 px-4 text-xl font-semibold">
-            {no_of_pet == "1"
-               ? t.qs_other_info_for_1_pet
-               : t.qs_other_info_for_2ormore_pets}
+            {t.qs_pet_owner_living_location}
          </div>
 
          {/* Answer Buttons */}
@@ -52,17 +54,13 @@ export default function SetNumberOfPet() {
                type="text"
                // value={""}
                // onChange={(e) => setText(e.target.value)}
-               placeholder="Enter additional information"
+               placeholder="Enter Ihr PLZ information"
                className="w-full max-w-xs h-10 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
             />
          </div>
 
          {/* Footer */}
-         <FooterComponent
-            backHref="/food_purchase_location"
-            nextHref="/food_purchase_location/monthly_spent/living_location"
-            isSubmit
-         />
+         <FooterComponent onBack={handleBack} isSubmit />
       </form>
    );
 }

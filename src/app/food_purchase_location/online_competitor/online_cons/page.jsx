@@ -26,7 +26,7 @@ export default function SetNumberOfPet() {
    };
 
    const handleBack = () => {
-      // router.push("/food_purchase_location/online_competitor/online_pros");
+      router.push("/food_purchase_location/online_competitor/online_pros");
    };
 
    const getButtonStyle = (option) =>
@@ -56,42 +56,52 @@ export default function SetNumberOfPet() {
          <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
             <button
                type="button"
-               onClick={() => setSelected("Zeitersparnis")} // ✅ Yes
+               onClick={() => setSelected("Lieferverzögerungen")} // ✅ Yes
                className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Zeitersparnis"
+                  "Lieferverzögerungen"
                )}`}
             >
-               {"Zeitersparnis"}
+               {"Lieferverzögerungen"}
             </button>
             <button
                type="button"
-               onClick={() => setSelected("Angebote")} // ✅ No
+               onClick={() => setSelected("Kein direktes Anfassen")} // ✅ No
                className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Angebote"
+                  "Kein direktes Anfassen"
                )}`}
             >
-               {"Angebote"}
+               {"Kein direktes Anfassen"}
             </button>
 
             <button
                type="button"
-               onClick={() => setSelected("Abo Modelle")} // ✅ No
+               onClick={() => setSelected("Rücksendungen kompliziert")} // ✅ No
                className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Abo Modelle"
+                  "Rücksendungen kompliziert"
                )}`}
             >
-               {"Abo Modelle"}
+               {"Rücksendungen kompliziert"}
             </button>
 
             <button
                type="button"
-               onClick={() => setSelected("Transparenz")} // ✅ No
+               onClick={() => setSelected("Fachberatung fehlt")} // ✅ No
                className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Transparenz"
+                  "Fachberatung fehlt"
                )}`}
             >
-               {"Transparenz"}
+               {"Fachberatung fehlt"}
             </button>
+            <button
+               type="button"
+               onClick={() => setSelected("Umweltbelastung")} // ✅ No
+               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
+                  "Umweltbelastung"
+               )}`}
+            >
+               {"Umweltbelastung"}
+            </button>
+
             <button
                type="button"
                onClick={() => setSelected("sonstige")} // ✅ No

@@ -44,6 +44,10 @@ export default function SetNumberOfPet() {
       }
    };
 
+   const handleBack = () => {
+      router.push("/food_purchase_location/monthly_spent/lead_PLZ");
+   }
+
    const getButtonStyle = (option) =>
       option === selected
          ? "bg-white text-[#4A3A2D] border-2 border-[#4A3A2D]"
@@ -90,10 +94,7 @@ export default function SetNumberOfPet() {
          </div>
 
          {/* Footer */}
-         <FooterComponent
-            backHref={"/food_purchase_location/monthly_spent/living_location"}
-            isSubmit
-         />
+         <FooterComponent onBack={handleBack} isSubmit />
       </form>
    );
 }

@@ -24,12 +24,14 @@ export default function SetNumberOfPet() {
       console.log("Selected option:", selected);
       //  sessionStorage.setItem("number_of_pets", selected);
 
-      router.push("/food_purchase_location/monthly_spent/other_info");
+      router.push("/food_purchase_location/monthly_spent/exceptional_note");
    };
 
    const handleBack = () => {
-      router.push("/food_purchase_location/monthly_spent/living_conditions_house");
-   }
+      router.push(
+         "/food_purchase_location/monthly_spent/living_conditions_house"
+      );
+   };
 
    const getButtonStyle = (option) =>
       option === selected
@@ -87,8 +89,7 @@ export default function SetNumberOfPet() {
          </div>
 
          {/* Footer */}
-         <FooterComponent onBack={handleBack} isSubmit
-         />
+         <FooterComponent onBack={handleBack} isSubmit />
       </form>
    );
 }
