@@ -15,13 +15,10 @@ export default function SetNumberOfPet() {
 
    // Begining of Home page set all session value
    useEffect(() => {
-      // This runs only in the browser
-      if (typeof window !== "undefined") {
-         const storedValue = sessionStorage.getItem("number_of_pets");
-         console.log(storedValue);
-         if (storedValue) {
-            //   setSelected(storedValue);
-         }
+      const storedValue = sessionStorage.getItem("number_of_pets");
+      console.log(storedValue);
+      if (storedValue) {
+         //   setSelected(storedValue);
       }
    }, []);
 
