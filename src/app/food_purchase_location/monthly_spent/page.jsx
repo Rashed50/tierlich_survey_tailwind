@@ -17,8 +17,6 @@ export default function SetNumberOfPet() {
    const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "DE";
    const t = langContent[lang];
 
-
-
    const handleSubmit = (e) => {
       e.preventDefault();
       if (!selected) {

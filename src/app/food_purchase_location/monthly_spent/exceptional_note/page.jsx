@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
@@ -8,7 +8,6 @@ import { langContent } from "@/lib/langContent";
 export default function SetNumberOfPet() {
    const [selected, setSelected] = useState();
    const [error, setError] = useState(false);
-   const searchParams = useSearchParams();
    const router = useRouter();
 
    const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "DE";
