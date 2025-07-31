@@ -8,7 +8,6 @@ import { langContent } from "@/lib/langContent";
 export default function SetNumberOfPet() {
    const [selected, setSelected] = useState();
    const [error, setError] = useState(false);
-
    const router = useRouter();
 
    const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "DE";
@@ -25,12 +24,14 @@ export default function SetNumberOfPet() {
          return;
       }
 
-      //  sessionStorage.setItem("number_of_pets", selected);
+      if (typeof window !== "undefined") {
+         sessionStorage.setItem("number_of_pets", selected);
+      }
 
       if (selected === "0") {
-         router.push("/food_purchase_location/online_competitor"); // online
+         router.push("/food_purchase_location/online_competitor");
       } else {
-         router.push("/food_purchase_location/stationary"); // stationary
+         router.push("/food_purchase_location/stationary");
       }
    };
 
@@ -46,7 +47,6 @@ export default function SetNumberOfPet() {
       >
          <HeaderComponent progress={10} />
 
-         {/* Question Text */}
          <div className="text-center mt-10 px-4 text-xl font-semibold">
             {t.qs_food_purchase_source}
          </div>
@@ -57,11 +57,10 @@ export default function SetNumberOfPet() {
             </p>
          )}
 
-         {/* Answer Buttons */}
          <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
             <button
                type="button"
-               onClick={() => setSelected("1")} // ✅ Stationary
+               onClick={() => setSelected("1")}
                className={`w-full max-w-xs h-14 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
                   "1"
                )}`}
@@ -70,7 +69,7 @@ export default function SetNumberOfPet() {
             </button>
             <button
                type="button"
-               onClick={() => setSelected("0")} // ✅ Online
+               onClick={() => setSelected("0")}
                className={`w-full max-w-xs h-14 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
                   "0"
                )}`}
@@ -79,7 +78,6 @@ export default function SetNumberOfPet() {
             </button>
          </div>
 
-         {/* Footer */}
          <FooterComponent onBack={handleBack} isSubmit />
       </form>
    );

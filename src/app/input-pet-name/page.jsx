@@ -39,6 +39,12 @@ export default function SetNumberOfPet() {
                }
             }
             setPetNames(namesObj);
+
+            // Set initial input value if exists
+            const petKeys = Object.keys(namesObj);
+            if (petKeys.length > 0) {
+               setCurrentPetName(namesObj[petKeys[0]] || "");
+            }
          } catch (error) {
             console.error("Error parsing pet data:", error);
             router.push("/has_pet/how_many");
@@ -98,7 +104,6 @@ export default function SetNumberOfPet() {
    const getProgressText = () => {
       const petKeys = Object.keys(petNames);
       if (currentPetIndex < petKeys.length) {
-         // return `Enter name for ${getCurrentPetType()} ${currentPetIndex + 1} of ${petKeys.length}`;
          return `Enter name for ${currentPetIndex + 1} of ${petKeys.length}`;
       }
       return "All pet names collected";

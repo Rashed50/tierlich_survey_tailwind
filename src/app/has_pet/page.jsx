@@ -1,75 +1,90 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
-import Image from 'next/image';
+import Image from "next/image";
 import supabase from "@/config/supabaseClient";
+import TextareaInput from "@/components/form/TextareaInput";
 
 export default function SetNumberOfPet() {
-
     const [selected, setSelected] = useState(null);
     const [error, setError] = useState(false);
+    const [otherText, setOtherText] = useState("");
+    const inputRef = useRef(null);
 
     const router = useRouter();
-
     const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "EN";
     const t = langContent[lang];
 
     useEffect(() => {
-        // This runs only in the browser
-        const storedValue = sessionStorage.getItem('pet_type');
-        console.log(storedValue)
+        const storedValue = sessionStorage.getItem("pet_type");
         if (storedValue) {
             setSelected(storedValue);
         }
     }, []);
 
-    const handleSubmit = (e) => {
+    useEffect(() => {
+        if (selected === "4" && inputRef.current) {
+            inputRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }, [selected]);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!selected) {
+        // Validate selection
+        if (!selected || (selected === "4" && !otherText.trim())) {
             setError(true);
-            // debugger;
             return;
         }
 
-        var pet_type_id = 1; // Hund
+        setError(false);
 
-        if (selected) {
-            console.log('Pet =', selected);
+        // If "Other" selected
+        if (selected === "4") {
+            console.log("Custom pet type (other):", otherText.trim());
+            sessionStorage.setItem("pet_type", selected);
+            sessionStorage.setItem("pet_type_other", otherText.trim()); // Save custom text if needed
+            router.push("/food_purchase_location");
+            return; // Stop further execution
+        }
 
-            if (selected === '1') {
-                sessionStorage.setItem("pet_type", selected);
-                router.push("/has_pet/how_many");
-            } else if (selected === '2') {
-                pet_type_id = 2;  // Katze
-                sessionStorage.setItem("pet_type", selected);
-                router.push("/has_pet/how_many");
-            } else if (selected === '3') {
-                pet_type_id = 3; // Katze und Hund
-                sessionStorage.setItem("pet_type", selected);
-                router.push("/has_pet/how_many");
-            } else {
-               
-                sessionStorage.setItem("pet_type", selected);
-                // router.push("/has_pet/other");
-            }
-            updateOwnerPetTypeServerInformation(pet_type_id)
+        // Map selection to pet_type_id
+        const petTypeMap = {
+            "1": 1, // Dog
+            "2": 2, // Cat
+            "3": 3, // Dog + Cat
+        };
+
+        const pet_type_id = petTypeMap[selected] || 1;
+
+        sessionStorage.setItem("pet_type", selected);
+        console.log("Selected pet type:", selected);
+
+        await updateOwnerPetTypeServerInformation(pet_type_id);
+
+        router.push("/has_pet/how_many");
+    };
+
+    const updateOwnerPetTypeServerInformation = async (pet_type_id) => {
+        const pet_owner_id = sessionStorage.getItem("pet_owner_id");
+        if (!pet_owner_id) {
+            console.warn("No pet_owner_id found in sessionStorage");
+            return;
+        }
+        const { data, error } = await supabase
+            .from("pet_owners")
+            .update({ pet_type_id })
+            .eq("id", pet_owner_id);
+
+        if (error) {
+            console.error("Failed to update pet type:", error);
+        } else {
+            console.log("Pet type updated:", data);
         }
     };
-
-    
-    
-   const updateOwnerPetTypeServerInformation  = async (pet_type) => {
- 
-       const pet_onwer_id = sessionStorage.getItem("pet_owner_id");
-       const { data, error } = await supabase.from('pet_owners').update([{pet_type_id:pet_type}]).eq('id',pet_onwer_id);
-     
-    };
-
-
 
     const handleBack = () => {
         router.push("/");
@@ -81,7 +96,10 @@ export default function SetNumberOfPet() {
             : "bg-[#4A3A2D] text-white";
 
     return (
-        <form onSubmit={handleSubmit} className="min-h-screen flex flex-col bg-[#f8f4ee] text-[#4A4A4A]" >
+        <form
+            onSubmit={handleSubmit}
+            className="min-h-screen flex flex-col bg-[#f8f4ee] text-[#4A4A4A] pb-24 overflow-y-auto"
+        >
             <HeaderComponent progress={10} />
 
             <div className="text-center mt-10 px-4 text-xl font-semibold">
@@ -89,72 +107,69 @@ export default function SetNumberOfPet() {
             </div>
 
             {error && (
-                <p className="text-red-500 text-center mb-2">Bitte wählen Sie eine Option aus</p>
+                <p className="text-red-500 text-center mb-2">
+                    Bitte wählen Sie eine Option aus
+                </p>
             )}
 
             <div className="grid grid-cols-2 gap-4 px-6 mt-10 max-w-md mx-auto">
-                {/* Button 1 */}
-                <button className={`w-25 h-25 flex items-center justify-center rounded-lg text-2xl font-semibold cursor-pointer hover:opacity-90 transition ${getOptionStyle(
-                    '1'
-                )}`}
+                {/* Dog */}
+                <button
+                    className={`w-25 h-25 flex items-center justify-center rounded-lg cursor-pointer hover:opacity-90 transition ${getOptionStyle(
+                        "1"
+                    )}`}
                     type="button"
-                    key={0} onClick={() => setSelected('1')}>
-                    {/* 🐶 */}
-                    <Image
-                        src="/dog.png"
-                        alt=""
-                        width={60}
-                        height={60}
-                    />
+                    onClick={() => setSelected("1")}
+                >
+                    <Image src="/dog.png" alt="Dog" width={60} height={60} />
                 </button>
 
-                {/* Button 2 */}
-                <button className={`w-25 h-25 flex items-center justify-center rounded-lg text-2xl font-semibold cursor-pointer hover:opacity-90 transition ${getOptionStyle(
-                    '2'
-                )}`}
+                {/* Cat */}
+                <button
+                    className={`w-25 h-25 flex items-center justify-center rounded-lg cursor-pointer hover:opacity-90 transition ${getOptionStyle(
+                        "2"
+                    )}`}
                     type="button"
-                    key={1} onClick={() => setSelected('2')}>
-                    {/* 🐱 */}
-                    <Image
-                        src="/cat.png"
-                        alt=""
-                        width={60}
-                        height={60}
-                    />
+                    onClick={() => setSelected("2")}
+                >
+                    <Image src="/cat.png" alt="Cat" width={60} height={60} />
                 </button>
 
-                {/* Button 3 */}
-                <button className={`w-25 h-25 flex items-center justify-center rounded-lg text-2xl font-semibold cursor-pointer hover:opacity-90 transition ${getOptionStyle(
-                    '3'
-                )}`}
+                {/* Dog + Cat */}
+                <button
+                    className={`w-25 h-25 flex gap-1 items-center justify-center rounded-lg cursor-pointer hover:opacity-90 transition ${getOptionStyle(
+                        "3"
+                    )}`}
                     type="button"
-                    key={2} onClick={() => setSelected('3')}>
-                    {/* <span>🐶</span>
-            <span>🐱</span> */}
-                    <Image
-                        src="/dog.png"
-                        alt=""
-                        width={45}
-                        height={45}
-                    />
-                    <Image
-                        src="/cat.png"
-                        alt=""
-                        width={40}
-                        height={40}
-                    />
+                    onClick={() => setSelected("3")}
+                >
+                    <Image src="/dog.png" alt="Dog" width={45} height={45} />
+                    <Image src="/cat.png" alt="Cat" width={40} height={40} />
                 </button>
 
-                {/* Button 4 */}
-                <button className={`w-25 h-25 flex items-center justify-center rounded-lg text-2xl font-semibold cursor-pointer hover:opacity-90 transition ${getOptionStyle(
-                    '4'
-                )}`}
+                {/* Other */}
+                <button
+                    className={`w-25 h-25 flex items-center justify-center rounded-lg text-sm font-medium cursor-pointer hover:opacity-90 transition ${getOptionStyle(
+                        "4"
+                    )}`}
                     type="button"
-                    key={3} onClick={() => setSelected('4')}   >
-                    text
+                    onClick={() => setSelected("4")}
+                >
+                    {t.other || "Andere"}
                 </button>
-
             </div>
+
+            {selected === "4" && (
+                <div className="mt-4 w-full max-w-xs mx-auto px-4">
+                    <TextareaInput
+                        value={otherText}
+                        onChange={(e) => setOtherText(e.target.value)}
+                        placeholder="Bitte geben Sie den Namen ein"
+                        required
+                        inputRef={inputRef}
+                    />
+                </div>
+            )}
 
             <FooterComponent onBack={handleBack} isSubmit />
         </form>

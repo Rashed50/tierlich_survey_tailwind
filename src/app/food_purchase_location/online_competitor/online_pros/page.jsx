@@ -1,12 +1,14 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
+import TextareaInput from "@/components/form/TextareaInput"; 
 
 export default function SetNumberOfPet() {
    const [selected, setSelected] = useState();
+   const [otherText, setOtherText] = useState(""); 
    const [error, setError] = useState(false);
    const router = useRouter();
 
@@ -15,24 +17,20 @@ export default function SetNumberOfPet() {
 
    const handleSubmit = (e) => {
       e.preventDefault();
-      if (!selected) {
+
+      if (!selected || (selected === "sonstige" && !otherText.trim())) {
          setError(true);
          return;
       }
-      setError(false);
-      console.log("Selected option:", selected);
-      //  sessionStorage.setItem("number_of_pets", selected);
-      router.push("/food_purchase_location/online_competitor/online_cons");
 
-      // if (selected === "0") {
-      //    router.push("/hasnotpet");
-      //    return;
-      // } else {
-      //    //
-      //    router.push(
-      //       "/food_purchase_location/qs_what_do_you_feed/qs_what_donot_like_feed"
-      //    );
-      // }
+      setError(false);
+
+      console.log("Selected option:", selected);
+      if (selected === "sonstige") {
+         console.log("User custom text:", otherText);
+      }
+
+      router.push("/food_purchase_location/online_competitor/online_cons");
    };
 
    const handleBack = () => {
@@ -64,53 +62,29 @@ export default function SetNumberOfPet() {
 
          {/* Answer Buttons */}
          <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
-            <button
-               type="button"
-               onClick={() => setSelected("Zeitersparnis")} // ✅ Yes
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Zeitersparnis"
-               )}`}
-            >
-               {"Zeitersparnis"}
-            </button>
-            <button
-               type="button"
-               onClick={() => setSelected("Angebote")} // ✅ No
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Angebote"
-               )}`}
-            >
-               {"Angebote"}
-            </button>
+            {["Zeitersparnis", "Angebote", "Abo Modelle", "Transparenz", "sonstige"].map(
+               (option) => (
+                  <button
+                     key={option}
+                     type="button"
+                     onClick={() => setSelected(option)}
+                     className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(option)}`}
+                  >
+                     {option === "sonstige" ? "sonstige" : option}
+                  </button>
+               )
+            )}
 
-            <button
-               type="button"
-               onClick={() => setSelected("Abo Modelle")} // ✅ No
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Abo Modelle"
-               )}`}
-            >
-               {"Abo Modelle"}
-            </button>
-
-            <button
-               type="button"
-               onClick={() => setSelected("Transparenz")} // ✅ No
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Transparenz"
-               )}`}
-            >
-               {"Transparenz"}
-            </button>
-            <button
-               type="button"
-               onClick={() => setSelected("sonstige")} // ✅ No
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "sonstige"
-               )}`}
-            >
-               {"sonstige (true=Textfield)"}
-            </button>
+            {selected === "sonstige" && (
+               <div className="w-full max-w-xs mt-4">
+                  <TextareaInput
+                     placeholder="Bitte geben Sie den Grund ein"
+                     value={otherText}
+                     onChange={(e) => setOtherText(e.target.value)}
+                     required
+                  />
+               </div>
+            )}
          </div>
 
          {/* Footer */}

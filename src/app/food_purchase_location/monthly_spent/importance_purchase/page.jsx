@@ -1,14 +1,16 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
+import TextareaInput from "@/components/form/TextareaInput"; // ✅ যুক্ত করো
 
 export default function SetNumberOfPet() {
    const router = useRouter();
 
    const [selected, setSelected] = useState();
+   const [otherText, setOtherText] = useState(""); // ✅ নতুন স্টেট
    const [error, setError] = useState(false);
 
    const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "DE";
@@ -16,13 +18,16 @@ export default function SetNumberOfPet() {
 
    const handleSubmit = (e) => {
       e.preventDefault();
-      if (!selected) {
+      if (!selected || (selected === "sonstige" && !otherText.trim())) {
          setError(true);
          return;
       }
       setError(false);
-      console.log("Selected option:", selected);
-      //  sessionStorage.setItem("number_of_pets", selected);
+
+      const finalValue = selected === "sonstige" ? otherText.trim() : selected;
+      console.log("Selected option:", finalValue);
+
+      // sessionStorage.setItem("number_of_pets", finalValue);
       router.push("/food_purchase_location/monthly_spent/lead_age");
    };
 
@@ -42,7 +47,6 @@ export default function SetNumberOfPet() {
       >
          <HeaderComponent progress={60} />
 
-         {/* Question Text */}
          <div className="text-center mt-10 px-4 text-xl font-semibold">
             {t.qs_important_purchase_feature}
          </div>
@@ -51,63 +55,39 @@ export default function SetNumberOfPet() {
             <p className="text-red-500 text-center mb-2">
                Bitte wählen Sie eine Option aus
             </p>
-         )}      
+         )}
 
-         {/* Answer Buttons */}
          <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
-            <button
-               type="button"
-               onClick={() => setSelected("Preis")} // ✅ No
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Preis"
-               )}`}
-            >
-               {"Preis"}
-            </button>
+            {["Preis", "Qualität", "Nachhaltigkeit", "Marke", "sonstige"].map(
+               (option) => (
+                  <button
+                     key={option}
+                     type="button"
+                     onClick={() => setSelected(option)}
+                     className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
+                        option
+                     )}`}
+                  >
+                     {option === "sonstige"
+                        ? "sonstige"
+                        : option}
+                  </button>
+               )
+            )}
 
-            <button
-               type="button"
-               onClick={() => setSelected("Qualität")} // ✅ No
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Qualität"
-               )}`}
-            >
-               {"Qualität"}
-            </button>
-
-            <button
-               type="button"
-               onClick={() => setSelected("Nachhaltigkeit")} // ✅ No
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Nachhaltigkeit"
-               )}`}
-            >
-               {"Nachhaltigkeit"}
-            </button>
-
-            <button
-               type="button"
-               onClick={() => setSelected("Marke")} // ✅ No
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Marke"
-               )}`}
-            >
-               {"Marke"}
-            </button>
-            <button
-               type="button"
-               onClick={() => setSelected("sonstige")} // ✅ No
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "sonstige"
-               )}`}
-            >
-               {"sonstige (true=textfield)"}
-            </button>
+            {selected === "sonstige" && (
+               <div className="mt-4 w-full max-w-xs mx-auto">
+                  <TextareaInput
+                     value={otherText}
+                     onChange={(e) => setOtherText(e.target.value)}
+                     placeholder="Bitte geben Sie den Namen ein"
+                     required
+                  />
+               </div>
+            )}
          </div>
 
-         {/* Footer */}
-         <FooterComponent onBack={handleBack} isSubmit
-         />
+         <FooterComponent onBack={handleBack} isSubmit />
       </form>
    );
 }

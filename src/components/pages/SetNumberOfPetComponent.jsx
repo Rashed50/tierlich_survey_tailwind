@@ -14,31 +14,38 @@ export default function SetNumberOfPetComponent() {
     const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "DE";
     const t = langContent[lang];
 
-    // Begining of Home page set all session value
     useEffect(() => {
-        const storedValue = sessionStorage.getItem("number_of_pets");
-        console.log(storedValue);
-        if (storedValue) {
-            //  setSelected(storedValue);
+        if (typeof window !== "undefined") {
+            const storedValue = sessionStorage.getItem("number_of_pets");
+            if (storedValue) {
+                setSelected(storedValue);
+                setNumberOfPet(Number(storedValue));
+            }
         }
     }, []);
 
-    const handleSubmit = (e) => {
+    const handleSelect = (value) => {
+        setSelected(value);
+        setNumberOfPet(Number(value));
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!selected) {
             setError(true);
             return;
         }
+        setError(false);
 
-        sessionStorage.setItem("number_of_pets", selected);
+        if (typeof window !== "undefined") {
+            sessionStorage.setItem("number_of_pets", selected);
+        }
 
-        saveInformationInServer(); // save information in Server
+        await saveInformationInServer();
 
         if (selected === "0") {
             router.push("/hasnotpet");
-            return;
         } else {
-            // yes has pet
             router.push("/has_pet");
         }
     };
@@ -60,7 +67,9 @@ export default function SetNumberOfPetComponent() {
             .select();
         if (error == null && data) {
             var new_row = data[0];
-            sessionStorage.setItem("pet_owner_id", new_row["id"]);
+            if (typeof window !== "undefined") {
+                sessionStorage.setItem("pet_owner_id", new_row["id"]);
+            }
         }
     };
 
@@ -73,21 +82,18 @@ export default function SetNumberOfPetComponent() {
 
             {/* Question Text */}
             <div className="text-center mt-10 px-4 text-xl font-semibold">
-                {/* {t.question1}             */}
                 {"Hast du Haustiere?"}
             </div>
 
             {/* Answer Buttons */}
             <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
                 {error && (
-                    <p className="text-red-500 mb-2">
-                        Bitte wählen Sie eine Option aus
-                    </p>
+                    <p className="text-red-500 mb-2">Bitte wählen Sie eine Option aus</p>
                 )}
 
                 <button
                     type="button"
-                    onClick={() => setSelected("1")} // ✅ Yes
+                    onClick={() => handleSelect("1")}
                     className={`w-full max-w-xs h-14 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
                         "1"
                     )}`}
@@ -96,7 +102,7 @@ export default function SetNumberOfPetComponent() {
                 </button>
                 <button
                     type="button"
-                    onClick={() => setSelected("0")} // ✅ No
+                    onClick={() => handleSelect("0")}
                     className={`w-full max-w-xs h-14 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
                         "0"
                     )}`}

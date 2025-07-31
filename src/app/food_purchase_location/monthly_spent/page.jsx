@@ -25,7 +25,10 @@ export default function SetNumberOfPet() {
       }
       setError(false);
       console.log("Selected option:", selected);
-      //  sessionStorage.setItem("number_of_pets", selected);
+      if (typeof window !== "undefined") {
+         sessionStorage.setItem("number_of_pets", selected);
+      }
+
       router.push("/food_purchase_location/monthly_spent/importance_purchase");
    };
 

@@ -1,12 +1,12 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
 
 export default function SetNumberOfPet() {
-    const [selected, setSelected] = useState();
+    const [selected, setSelected] = useState("");
     const [error, setError] = useState(false);
 
     const searchParams = useSearchParams();
@@ -15,7 +15,7 @@ export default function SetNumberOfPet() {
     const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "EN";
     const t = langContent[lang];
 
-    const fromStep = searchParams.get("fromStep");
+    const fromStep = searchParams?.get("fromStep");
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -24,7 +24,9 @@ export default function SetNumberOfPet() {
             return;
         }
 
-        sessionStorage.setItem("number_of_pets", selected);
+        if (typeof window !== "undefined") {
+            sessionStorage.setItem("number_of_pets", selected);
+        }
         router.push("/input-pet-name");
     };
 
@@ -49,9 +51,7 @@ export default function SetNumberOfPet() {
             <HeaderComponent progress={10} />
 
             {/* Question */}
-            <div className="text-center mt-10 text-xl font-semibold">
-                {t.question4}
-            </div>
+            <div className="text-center mt-10 text-xl font-semibold">{t.question4}</div>
 
             {/* Options */}
             <div className="flex flex-col gap-3 max-w-md mx-auto w-full px-4 mt-10">
@@ -61,7 +61,7 @@ export default function SetNumberOfPet() {
                         type="button"
                         onClick={() => {
                             setSelected(opt);
-                            setError(false); // remove error if selected
+                            setError(false);
                         }}
                         className={`w-full h-14 rounded-lg text-lg font-semibold hover:opacity-90 transition flex items-center justify-center ${getButtonStyle(
                             opt

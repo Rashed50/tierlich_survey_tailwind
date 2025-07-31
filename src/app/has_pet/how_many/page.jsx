@@ -19,64 +19,57 @@ export default function HasNotPet() {
 
    useEffect(() => {
       const storedPetTypeValue = sessionStorage.getItem("pet_type") || "1";
-      console.log("Pet Type =", storedPetTypeValue);
-      if (storedPetTypeValue === "1") {
-         setPetType("Hund");
-      } else if (storedPetTypeValue === "2") {
-         setPetType("Katze");
-      } else if (storedPetTypeValue === "3") {
-         setPetType("Hund und Katze");
-      }
+      if (storedPetTypeValue === "1") setPetType("Hund");
+      else if (storedPetTypeValue === "2") setPetType("Katze");
+      else if (storedPetTypeValue === "3") setPetType("Hund und Katze");
 
       const storedPetNumber = sessionStorage.getItem("pet_number");
       if (storedPetNumber) {
          try {
             const parsed = JSON.parse(storedPetNumber);
-            if (parsed.dog !== undefined) {
-               setSelected(parsed.dog);
-            } else if (parsed.cat !== undefined) {
-               setSelected(parsed.cat);
-            } else if (parsed.count !== undefined) {
-               setSelected(parsed.count);
-            }
+            if (parsed.dog !== undefined) setSelected(parsed.dog);
+            else if (parsed.cat !== undefined) setSelected(parsed.cat);
+            else if (parsed.count !== undefined) setSelected(parsed.count);
          } catch {
             setSelected(storedPetNumber);
          }
       }
-
-      
    }, []);
+
+   const updateOwnerNumberOfPetsServerInformation = async (number_of_pet) => {
+      const pet_owner_id = sessionStorage.getItem("pet_owner_id");
+      if (!pet_owner_id) return;
+      const { data, error } = await supabase
+         .from("pet_owners")
+         .update({ number_of_pet })
+         .eq("id", pet_owner_id);
+      if (error) console.error("Supabase update error:", error);
+      else console.log("Supabase update success:", data);
+   };
 
    const handleSubmit = (e) => {
       e.preventDefault();
-
       if (!selected) {
          setError(true);
          return;
       }
+      setError(false);
 
       if (selected === "Mehr als 3") {
          router.push("/food_purchase_location");
          return;
       }
 
-     
-
       if (pet_type === "Hund und Katze") {
-
          if (step === 1) {
             // Store dog count and move to cat count selection
             const petData = { dog: selected };
             sessionStorage.setItem("pet_number", JSON.stringify(petData));
             setStep(2);
             setSelected(undefined); // Reset selection for cat count
-            setError(false);
-            return;
          } else if (step === 2) {
             // Get previously stored dog count
-            const prevData = JSON.parse(
-               sessionStorage.getItem("pet_number") || "{}"
-            );
+            const prevData = JSON.parse(sessionStorage.getItem("pet_number") || "{}");
             // Store both counts as JSON object
             const petData = {
                dog: prevData.dog,
@@ -84,11 +77,11 @@ export default function HasNotPet() {
                type: "Hund und Katze",
             };
             sessionStorage.setItem("pet_number", JSON.stringify(petData));
-             updateOwnerNumberOfPetsServerInformation(selected);
+            updateOwnerNumberOfPetsServerInformation(prevData.dog + selected); // optionally sum if you want total pets
             router.push("/input-pet-name");
          }
       } else {
-         // For single pet type
+         // Single pet type
          const petData = {
             count: selected,
             type: pet_type,
@@ -101,28 +94,15 @@ export default function HasNotPet() {
 
    const handleBack = () => {
       if (pet_type === "Hund und Katze" && step === 2) {
-         // Go back to dog count selection
          setStep(1);
-         const prevData = JSON.parse(
-            sessionStorage.getItem("pet_number") || "{}"
-         );
+         const prevData = JSON.parse(sessionStorage.getItem("pet_number") || "{}");
          setSelected(prevData.dog || undefined);
+         setError(false);
       } else {
          router.push("/has_pet");
+         setError(false);
       }
-      setError(false);
    };
-
-
-
-   const updateOwnerNumberOfPetsServerInformation  = async (number_of_pet) => {
-
- 
-       const pet_onwer_id = sessionStorage.getItem("pet_owner_id");
-       const { data, error } = await supabase.from('pet_owners').update([{number_of_pet:number_of_pet}]).eq('id',pet_onwer_id);
-       console.log(data)
-     
-    };
 
    const getOptionStyle = (option) =>
       option === selected
@@ -131,9 +111,7 @@ export default function HasNotPet() {
 
    const renderQuestion = () => {
       if (pet_type === "Hund und Katze") {
-         return step === 1
-            ? "Wie viele Hunde begleiten dich?"
-            : "Wie viele Katzen begleiten dich?";
+         return step === 1 ? "Wie viele Hunde begleiten dich?" : "Wie viele Katzen begleiten dich?";
       }
       return `Wie viele ${pet_type} begleiten dich?`;
    };
@@ -144,23 +122,15 @@ export default function HasNotPet() {
          className="min-h-screen flex flex-col bg-[#f8f4ee] text-[#4A4A4A]"
       >
          <HeaderComponent
-            progress={
-               pet_type === "Hund und Katze" ? (step === 1 ? 30 : 70) : 50
-            }
+            progress={pet_type === "Hund und Katze" ? (step === 1 ? 30 : 70) : 50}
          />
 
-         {/* Question Text */}
-         <div className="text-center mt-10 text-xl font-semibold">
-            {renderQuestion()}
-         </div>
+         <div className="text-center mt-10 text-xl font-semibold">{renderQuestion()}</div>
 
          {error && (
-            <p className="text-red-500 text-center mb-2">
-               Bitte wählen Sie eine Option aus
-            </p>
+            <p className="text-red-500 text-center mb-2">Bitte wählen Sie eine Option aus</p>
          )}
 
-         {/* Options */}
          <div className="flex flex-col gap-3 max-w-md mx-auto w-full px-4 mt-10">
             {["1", "2", "3", "Mehr als 3"].map((opt, idx) => (
                <button
@@ -168,7 +138,7 @@ export default function HasNotPet() {
                   type="button"
                   onClick={() => {
                      setSelected(opt);
-                     console.log("Selected number:", opt);
+                     setError(false);
                   }}
                   className={`w-full h-14 rounded-lg text-lg font-semibold hover:opacity-90 transition flex items-center justify-center ${getOptionStyle(
                      opt
@@ -179,15 +149,10 @@ export default function HasNotPet() {
             ))}
          </div>
 
-         {/* Footer */}
          <FooterComponent
             onBack={handleBack}
             isSubmit={!!selected}
-            nextText={
-               pet_type === "Hund und Katze" && step === 1
-                  ? "Weiter"
-                  : undefined
-            }
+            nextText={pet_type === "Hund und Katze" && step === 1 ? "Weiter" : undefined}
          />
       </form>
    );

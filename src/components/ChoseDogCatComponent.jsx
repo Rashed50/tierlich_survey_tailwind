@@ -10,20 +10,21 @@ export default function ChoseComponent({
    next,
 }) {
    const options = ["🐶", "🐱", "🐶🐱", "Text"];
-   const [selected, setSelected] = useState(null);
+   const [selected, setSelected] = useState("");
 
-   // ✅ Load previous selection from sessionStorage
    useEffect(() => {
-      const stored = sessionStorage.getItem("question2_ans");
-      if (stored) {
-         setSelected(stored);
+      if (typeof window !== "undefined") {
+         const stored = sessionStorage.getItem("question2_ans");
+         if (stored) {
+            setSelected(stored);
+         }
       }
    }, []);
 
    const handleSubmit = (e) => {
       e.preventDefault();
       if (selected) {
-         sessionStorage.setItem("question2_ans", selected); // ✅ store in sessionStorage
+         sessionStorage.setItem("question2_ans", selected);
          if (next) next();
       }
    };

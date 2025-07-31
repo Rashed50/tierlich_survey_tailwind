@@ -1,12 +1,14 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
+import TextareaInput from "@/components/form/TextareaInput"; 
 
 export default function SetNumberOfPet() {
    const [selected, setSelected] = useState();
+   const [otherText, setOtherText] = useState(""); 
    const [error, setError] = useState(false);
 
    const router = useRouter();
@@ -16,13 +18,16 @@ export default function SetNumberOfPet() {
 
    const handleSubmit = (e) => {
       e.preventDefault();
-      if (!selected) {
+
+      if (!selected || (selected === "sonstige" && !otherText.trim())) {
          setError(true);
          return;
       }
+
       setError(false);
-      console.log("Selected option:", selected);
-      //  sessionStorage.setItem("number_of_pets", selected);
+      const finalValue = selected === "sonstige" ? otherText.trim() : selected;
+      console.log("Selected option:", finalValue);
+      // sessionStorage.setItem("number_of_pets", finalValue);
       router.push("/food_purchase_location/monthly_spent?from=stationary");
    };
 
@@ -55,67 +60,39 @@ export default function SetNumberOfPet() {
 
          {/* Answer Buttons */}
          <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
-            <button
-               type="button"
-               onClick={() => setSelected("Begrenzte Öffnungszeiten")} // ✅ Yes
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Begrenzte Öffnungszeiten"
-               )}`}
-            >
-               {"Begrenzte Öffnungszeiten"}
-            </button>
-            <button
-               type="button"
-               onClick={() => setSelected("ein automatischer Nachschub")} // ✅ Yes
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "ein automatischer Nachschub"
-               )}`}
-            >
-               {"ein automatischer Nachschub"}
-            </button>
+            {[
+               "Begrenzte Öffnungszeiten",
+               "ein automatischer Nachschub",
+               "Schleppen und Treppen steigen",
+               "Hohe Preise",
+               "man vergisst mal was",
+               "sonstige",
+            ].map((option) => (
+               <button
+                  key={option}
+                  type="button"
+                  onClick={() => setSelected(option)}
+                  className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
+                     option
+                  )}`}
+               >
+                  {option}
+               </button>
+            ))}
 
-            <button
-               type="button"
-               onClick={() => setSelected("Schleppen und Treppen steigen")} // ✅ Yes
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Schleppen und Treppen steigen"
-               )}`}
-            >
-               {"Schleppen und Treppen steigen"}
-            </button>
-
-            <button
-               type="button"
-               onClick={() => setSelected("Hohe Preise")} // ✅ No
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "Hohe Preise"
-               )}`}
-            >
-               {"Hohe Preise"}
-            </button>
-
-            <button
-               type="button"
-               onClick={() => setSelected("man vergisst mal was")} // ✅ No
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "man vergisst mal was"
-               )}`}
-            >
-               {"man vergisst mal was"}
-            </button>
-
-            <button
-               type="button"
-               onClick={() => setSelected("sonstige (true=Textfield)")} // ✅ No
-               className={`w-full max-w-xs h-10 rounded-xl text-lg font-semibold hover:opacity-90 transition ${getButtonStyle(
-                  "sonstige (true=Textfield)"
-               )}`}
-            >
-               {"sonstige (true=Textfield)"}
-            </button>
+            {/* Textarea for "sonstige" */}
+            {selected === "sonstige" && (
+               <div className="mt-4 w-full max-w-xs mx-auto">
+                  <TextareaInput
+                     value={otherText}
+                     onChange={(e) => setOtherText(e.target.value)}
+                     placeholder="Bitte geben Sie Ihre Antwort ein"
+                     required
+                  />
+               </div>
+            )}
          </div>
 
-         {/* Footer */}
          <FooterComponent onBack={handleBack} isSubmit />
       </form>
    );
