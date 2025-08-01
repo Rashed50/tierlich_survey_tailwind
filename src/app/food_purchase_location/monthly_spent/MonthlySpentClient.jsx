@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
+import supabase from "@/config/supabaseClient";
 
 export default function MonthlySpentClient() {
   const [selected, setSelected] = useState();
@@ -26,11 +27,13 @@ export default function MonthlySpentClient() {
     }
 
     setError(false);
-    sessionStorage.setItem("number_of_pets", selected);
+    // sessionStorage.setItem("number_of_pets", selected);
+    updateQuestionNo16Answer();
     router.push("/food_purchase_location/monthly_spent/importance_purchase");
   };
 
   const handleBack = () => {
+   
     if (from === "stationary") {
       router.push("/food_purchase_location/stationary/obstacles");
     } else if (from === "online") {
@@ -39,6 +42,22 @@ export default function MonthlySpentClient() {
       router.push("/food_purchase_location");
     }
   };
+
+
+  // import supabase from "@/config/supabaseClient";
+  //  (100*15)/30 
+  const updateQuestionNo16Answer = async () => {
+      const pet_owner_id = sessionStorage.getItem("pet_owner_id");
+      if (!pet_owner_id) return;
+         // update qs answer
+         const { error: qs_error } = await supabase
+                .from('survery_histories')
+                .insert([
+                { pet_owner_id:pet_owner_id, sv_qs_id: 16, qs_answer: selected} 
+                ])
+
+      
+   };
 
   const getButtonStyle = (option) =>
     option === selected
@@ -50,7 +69,7 @@ export default function MonthlySpentClient() {
       onSubmit={handleSubmit}
       className="min-h-screen flex flex-col bg-[#f8f4ee] text-[#4A4A4A]"
     >
-      <HeaderComponent progress={60} />
+      <HeaderComponent progress={ (100*16)/30 } />
 
       <div className="text-center mt-10 px-4 text-xl font-semibold">
         {t.qs_monthly_cost}

@@ -7,10 +7,19 @@ import { langContent } from "@/lib/langContent";
 
 export default function HasNotPet() {
    const [selected, setSelected] = useState();
+      const [survey_domain_address, setSurveyDomainAddress] = useState();
    const router = useRouter();
 
    const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "DE";
    const t = langContent[lang];
+
+   useEffect(() => {
+      // const domain_add = window.location.origin; // e.g. https://yourdomain.com
+      // setSurveyDomainAddress(domain_add);
+    //  console.log('Client domain:', domain_add);
+  }, []);
+
+
 
    const handleSubmit = (e) => {
       e.preventDefault();
@@ -34,7 +43,7 @@ export default function HasNotPet() {
          onSubmit={handleSubmit}
          className="min-h-screen flex flex-col bg-[#f8f4ee] text-[#4A4A4A]"
       >
-         <HeaderComponent progress={95} />
+         <HeaderComponent progress={100} />
 
          {/* Question Text */}
          <div className="text-center mt-10 px-4 text-xl font-semibold">
@@ -44,9 +53,8 @@ export default function HasNotPet() {
          <div className="flex flex-col-2 gap-0 items-center justify-center mt-10 px-4">
             <input
                type="text"
-               // value={""}
-               // onChange={(e) => setText(e.target.value)}
-               placeholder="Shared link will be here"
+               //  value={"https://127.0.0.1:3000"}
+                placeholder="Shared link will be here"                
                className="w-full max-w-xs h-10 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
             />
 

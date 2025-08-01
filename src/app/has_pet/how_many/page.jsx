@@ -44,7 +44,16 @@ export default function HasNotPet() {
          .update({ number_of_pet })
          .eq("id", pet_owner_id);
       if (error) console.error("Supabase update error:", error);
-      else console.log("Supabase update success:", data);
+      else {
+         console.log("Supabase update success:", data);
+         // update qs answer
+         const { error: qs_error } = await supabase
+                .from('survery_histories')
+                .insert([
+                { pet_owner_id:pet_owner_id, sv_qs_id: 3, qs_answer: number_of_pet} 
+                ])
+
+      }
    };
 
    const handleSubmit = (e) => {
@@ -77,7 +86,7 @@ export default function HasNotPet() {
                type: "Hund und Katze",
             };
             sessionStorage.setItem("pet_number", JSON.stringify(petData));
-            updateOwnerNumberOfPetsServerInformation(prevData.dog + selected); // optionally sum if you want total pets
+            updateOwnerNumberOfPetsServerInformation(selected); // optionally sum if you want total pets
             router.push("/input-pet-name");
          }
       } else {
@@ -122,7 +131,8 @@ export default function HasNotPet() {
          className="min-h-screen flex flex-col bg-[#f8f4ee] text-[#4A4A4A]"
       >
          <HeaderComponent
-            progress={pet_type === "Hund und Katze" ? (step === 1 ? 30 : 70) : 50}
+            // progress={pet_type === "Hund und Katze" ? (step === 1 ? 30 : 70) : 50}
+            progress={(100*3)/30}
          />
 
          <div className="text-center mt-10 text-xl font-semibold">{renderQuestion()}</div>

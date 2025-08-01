@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
+import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
 
 export default function SetNumberOfPet() {
    const router = useRouter();
@@ -22,8 +23,18 @@ export default function SetNumberOfPet() {
       setError(false);
       console.log("Selected option:", selected);
       //  sessionStorage.setItem("number_of_pets", selected);
-      router.push("/food_purchase_location/monthly_spent/living_situation_family");
-   };
+ 
+
+      try {
+               const pet_owner_id = sessionStorage.getItem("pet_owner_id");
+               const result =  updateSurveyQuestionAnwser({ pet_owner_id:pet_owner_id, sv_qs_id: 19,qs_answer: selected });
+               console.log('Inserted:', result);
+            } catch (err) {
+               console.error('Error inserting user:', err);
+            } finally { 
+                    router.push("/food_purchase_location/monthly_spent/living_situation_family");
+            }
+      };
 
    const handleBack = () => {
       router.push("/food_purchase_location/monthly_spent/lead_age");
@@ -39,7 +50,7 @@ export default function SetNumberOfPet() {
          onSubmit={handleSubmit}
          className="min-h-screen flex flex-col bg-[#f8f4ee] text-[#4A4A4A]"
       >
-         <HeaderComponent progress={60} />
+         <HeaderComponent progress={ (100*19)/30 } />
 
          {/* Question Text */}
          <div className="text-center mt-10 px-4 text-xl font-semibold">

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
+import supabase from "@/config/supabaseClient";
 
 export default function SetNumberOfPet() {
    const [selected, setSelected] = useState();
@@ -22,12 +23,26 @@ export default function SetNumberOfPet() {
       }
       setError(false);
       console.log("Selected option:", selected);
+      updateQuestionNo13Answer()
       //  sessionStorage.setItem("number_of_pets", selected);
       router.push("/food_purchase_location/stationary/purchase_interval");
    };
 
    const handleBack = () => {
       router.push("/food_purchase_location");
+   };
+
+   const updateQuestionNo13Answer = async () => {
+      const pet_owner_id = sessionStorage.getItem("pet_owner_id");
+      if (!pet_owner_id) return;
+         // update qs answer
+         const { error: qs_error } = await supabase
+                .from('survery_histories')
+                .insert([
+                { pet_owner_id:pet_owner_id, sv_qs_id: 13, qs_answer: selected} 
+                ])
+
+      
    };
 
    const getButtonStyle = (option) =>
@@ -40,7 +55,7 @@ export default function SetNumberOfPet() {
          onSubmit={handleSubmit}
          className="min-h-screen flex flex-col bg-[#f8f4ee] text-[#4A4A4A]"
       >
-         <HeaderComponent progress={10} />
+         <HeaderComponent progress={ (100*13)/30 } />
 
          {/* Question Text */}
          <div className="text-center mt-10 px-4 text-xl font-semibold">

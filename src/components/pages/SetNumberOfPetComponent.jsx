@@ -70,6 +70,12 @@ export default function SetNumberOfPetComponent() {
             if (typeof window !== "undefined") {
                 sessionStorage.setItem("pet_owner_id", new_row["id"]);
             }
+
+            const { error: itemsError } = await supabase
+                .from('survery_histories')
+                .insert([
+                { pet_owner_id:new_row["id"], sv_qs_id: 1, qs_answer: selected =="1" ? "pet": "no pet" } 
+                ])
         }
     };
 
@@ -78,7 +84,7 @@ export default function SetNumberOfPetComponent() {
             onSubmit={handleSubmit}
             className="min-h-screen flex flex-col bg-[#f8f4ee] text-[#4A4A4A]"
         >
-            <HeaderComponent progress={10} />
+            <HeaderComponent progress={1} />
 
             {/* Question Text */}
             <div className="text-center mt-10 px-4 text-xl font-semibold">

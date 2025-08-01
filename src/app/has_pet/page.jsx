@@ -72,6 +72,17 @@ export default function SetNumberOfPet() {
             console.error("Failed to update pet type:", error);
         } else {
             console.log("Pet type updated:", data);
+          var pet_type_name = "Katze und Hund";    
+            if (pet_type_id == 1)
+                pet_type_name ="Hund";
+            else if(pet_type_id == 2)
+                pet_type_name ="Katze";
+
+            const { error: itemsError } = await supabase
+                .from('survery_histories')
+                .insert([
+                { pet_owner_id:pet_owner_id, sv_qs_id: 2, qs_answer: pet_type_name} 
+                ])
         }
     };
 
@@ -89,7 +100,7 @@ export default function SetNumberOfPet() {
             onSubmit={handleSubmit}
             className="min-h-screen flex flex-col bg-[#f8f4ee] text-[#4A4A4A] pb-24 overflow-y-auto"
         >
-            <HeaderComponent progress={10} />
+            <HeaderComponent progress={(100*2)/30} />
 
             <div className="text-center mt-10 px-4 text-xl font-semibold">
                 {t.qs_which_pet_has}

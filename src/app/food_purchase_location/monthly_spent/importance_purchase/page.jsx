@@ -5,6 +5,8 @@ import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
 import TextareaInput from "@/components/form/TextareaInput"; // ✅ যুক্ত করো
+import supabase from "@/config/supabaseClient";
+
 
 export default function SetNumberOfPet() {
    const router = useRouter();
@@ -28,12 +30,34 @@ export default function SetNumberOfPet() {
       console.log("Selected option:", finalValue);
 
       // sessionStorage.setItem("number_of_pets", finalValue);
+      updateQuestionNo17Answer(finalValue)
       router.push("/food_purchase_location/monthly_spent/lead_age");
    };
 
    const handleBack = () => {
       router.push("/food_purchase_location/monthly_spent/");
    };
+
+
+
+
+
+     // import supabase from "@/config/supabaseClient";
+  //  (100*15)/30 
+  const updateQuestionNo17Answer = async (finalValue) => {
+      const pet_owner_id = sessionStorage.getItem("pet_owner_id");
+      if (!pet_owner_id) return;
+         // update qs answer
+         const { error: qs_error } = await supabase
+                .from('survery_histories')
+                .insert([
+                { pet_owner_id:pet_owner_id, sv_qs_id: 17, qs_answer: finalValue} 
+                ])
+
+      
+   };
+
+
 
    const getButtonStyle = (option) =>
       option === selected
@@ -45,7 +69,7 @@ export default function SetNumberOfPet() {
          onSubmit={handleSubmit}
          className="min-h-screen flex flex-col bg-[#f8f4ee] text-[#4A4A4A]"
       >
-         <HeaderComponent progress={60} />
+         <HeaderComponent progress={(100*17)/30 } />
 
          <div className="text-center mt-10 px-4 text-xl font-semibold">
             {t.qs_important_purchase_feature}
