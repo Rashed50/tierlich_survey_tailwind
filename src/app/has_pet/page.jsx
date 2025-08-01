@@ -1,57 +1,47 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
 import Image from "next/image";
 import supabase from "@/config/supabaseClient";
-import TextareaInput from "@/components/form/TextareaInput";
 
 export default function SetNumberOfPet() {
     const [selected, setSelected] = useState(null);
     const [error, setError] = useState(false);
-    const [otherText, setOtherText] = useState("");
-    const inputRef = useRef(null);
-
     const router = useRouter();
     const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "EN";
     const t = langContent[lang];
 
     useEffect(() => {
-        const storedValue = sessionStorage.getItem("pet_type");
-        if (storedValue) {
-            setSelected(storedValue);
+        if (typeof window !== "undefined") {
+            const storedValue = sessionStorage.getItem("pet_type");
+            if (storedValue) {
+                setSelected(storedValue);
+            }
         }
     }, []);
-
-    useEffect(() => {
-        if (selected === "4" && inputRef.current) {
-            inputRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
-    }, [selected]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validate selection
-        if (!selected || (selected === "4" && !otherText.trim())) {
+        if (!selected) {
             setError(true);
             return;
         }
 
         setError(false);
 
-        // If "Other" selected
-        if (selected === "4") {
-            console.log("Custom pet type (other):", otherText.trim());
+        if (typeof window !== "undefined") {
             sessionStorage.setItem("pet_type", selected);
-            sessionStorage.setItem("pet_type_other", otherText.trim()); // Save custom text if needed
-            router.push("/food_purchase_location");
-            return; // Stop further execution
         }
 
-        // Map selection to pet_type_id
+        if (selected === "4") {
+            router.push("/has_pet/other");
+            return;
+        }
+
         const petTypeMap = {
             "1": 1, // Dog
             "2": 2, // Cat
@@ -60,20 +50,19 @@ export default function SetNumberOfPet() {
 
         const pet_type_id = petTypeMap[selected] || 1;
 
-        sessionStorage.setItem("pet_type", selected);
-        console.log("Selected pet type:", selected);
-
         await updateOwnerPetTypeServerInformation(pet_type_id);
-
         router.push("/has_pet/how_many");
     };
 
     const updateOwnerPetTypeServerInformation = async (pet_type_id) => {
+        if (typeof window === "undefined") return;
+
         const pet_owner_id = sessionStorage.getItem("pet_owner_id");
         if (!pet_owner_id) {
             console.warn("No pet_owner_id found in sessionStorage");
             return;
         }
+
         const { data, error } = await supabase
             .from("pet_owners")
             .update({ pet_type_id })
@@ -158,18 +147,6 @@ export default function SetNumberOfPet() {
                     {t.other || "Andere"}
                 </button>
             </div>
-
-            {selected === "4" && (
-                <div className="mt-4 w-full max-w-xs mx-auto px-4">
-                    <TextareaInput
-                        value={otherText}
-                        onChange={(e) => setOtherText(e.target.value)}
-                        placeholder="Bitte geben Sie den Namen ein"
-                        required
-                        inputRef={inputRef}
-                    />
-                </div>
-            )}
 
             <FooterComponent onBack={handleBack} isSubmit />
         </form>
