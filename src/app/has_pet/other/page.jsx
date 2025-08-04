@@ -36,7 +36,7 @@ export default function HasNotPet() {
       setError(false);  // ← Clear error if selected
 
       sessionStorage.setItem("other_pet", selected);
-      router.push("/food_purchase_location");
+      router.push("/has_pet/other/different_pet_name");
    };
 
    const handleBack = () => {
