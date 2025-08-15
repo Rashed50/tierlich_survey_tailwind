@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
-import supabase from "@/config/supabaseClient";
+import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
 
 export default function MonthlySpentClient() {
   const [selected, setSelected] = useState();
@@ -28,7 +28,7 @@ export default function MonthlySpentClient() {
 
     setError(false);
     // sessionStorage.setItem("number_of_pets", selected);
-    updateQuestionNo16Answer();
+    updateQuestionAnswer(selected);
     router.push("/food_purchase_location/monthly_spent/importance_purchase");
   };
 
@@ -46,18 +46,17 @@ export default function MonthlySpentClient() {
 
   // import supabase from "@/config/supabaseClient";
   //  (100*15)/30 
-  const updateQuestionNo16Answer = async () => {
-      const pet_owner_id = sessionStorage.getItem("pet_owner_id");
-      if (!pet_owner_id) return;
-         // update qs answer
-         const { error: qs_error } = await supabase
-                .from('survery_histories')
-                .insert([
-                { pet_owner_id:pet_owner_id, sv_qs_id: 16, qs_answer: selected} 
-                ])
 
-      
-   };
+    const updateQuestionAnswer = async (answer) => {
+        //qs: Wie viel gibst du monatlich für dein Haustier aus?
+        // import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
+
+        const pet_owner_id = sessionStorage.getItem("pet_owner_id");
+        if (!pet_owner_id) return;
+        const result =  updateSurveyQuestionAnwser({ pet_owner_id:pet_owner_id, sv_qs_id: 16,qs_answer: answer });
+        console.log('Inserted:', result);         
+  };
+
 
   const getButtonStyle = (option) =>
     option === selected

@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
-import supabase from "@/config/supabaseClient";
+import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
 
 export default function PurchaseInterval() {
    const [selected, setSelected] = useState();
@@ -33,12 +33,10 @@ export default function PurchaseInterval() {
    const updateQuestionNo14Answer = async () => {
       const pet_owner_id = sessionStorage.getItem("pet_owner_id");
       if (!pet_owner_id) return;
-         // update qs answer
-         const { error: qs_error } = await supabase
-                .from('survery_histories')
-                .insert([
-                { pet_owner_id:pet_owner_id, sv_qs_id: 14, qs_answer: selected} 
-                ])
+          //qs: Wie oft musst du dafür losziehen?
+         // import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
+         const result =  updateSurveyQuestionAnwser({ pet_owner_id:pet_owner_id, sv_qs_id: 14,qs_answer: selected});
+         console.log('Inserted:', result);
 
       
    };

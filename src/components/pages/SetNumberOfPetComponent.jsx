@@ -61,6 +61,8 @@ export default function SetNumberOfPetComponent() {
     const [number_of_pet, setNumberOfPet] = useState(1);
 
     const saveInformationInServer = async () => {
+
+              debugger;
         const { data, error } = await supabase
             .from("pet_owners")
             .insert([{ owner_name, email, number_of_pet }])

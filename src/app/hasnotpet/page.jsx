@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
-import supabase from "@/config/supabaseClient";
+import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
 
 
 export default function HasNotPet() {
@@ -20,8 +20,8 @@ export default function HasNotPet() {
             setError(true);
             return;
         }
-
-        //  sessionStorage.setItem("number_of_pets", selected);
+        setAllLocalSessionStorage(); // Set default data 
+        updateQuestionNoAnswer();
 
         if (selected === "1") {
             router.push("/hasnotpet/pet_type");
@@ -32,18 +32,19 @@ export default function HasNotPet() {
         }
     };
 
-    const updateQuestionNo14Answer = async () => {
-      const pet_owner_id = sessionStorage.getItem("pet_owner_id");
-      if (!pet_owner_id) return;
-         // update qs answer
-         const { error: qs_error } = await supabase
-                .from('survery_histories')
-                .insert([
-                { pet_owner_id:pet_owner_id, sv_qs_id: 14, qs_answer: selected} 
-                ])
+    const updateQuestionNoAnswer = async () => {
+        //qs: Kommt ein Haustier für dich in Frage
+        const pet_owner_id = sessionStorage.getItem("pet_owner_id");
+                   const result =  updateSurveyQuestionAnwser({ pet_owner_id:pet_owner_id, sv_qs_id: 25,qs_answer: selected == '1' ? "Yes" : "No" });
+                   console.log('Inserted:', result);
 
       
    };
+
+
+   const setAllLocalSessionStorage = () => {
+          sessionStorage.setItem("number_of_pets", "1");     
+    }
 
     const getButtonStyle = (option) =>
         option === selected

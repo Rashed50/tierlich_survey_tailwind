@@ -5,6 +5,7 @@ import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
 import TextareaInput from "@/components/form/TextareaInput";
+import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
 
 export default function SetNumberOfPet() {
    const [selected, setSelected] = useState();
@@ -28,7 +29,7 @@ export default function SetNumberOfPet() {
 
       console.log("Selected option:", selectedValue);
 
-      // sessionStorage.setItem("number_of_pets", selectedValue);
+      updateQuestionAnswer(selectedValue);
       router.push("/food_purchase_location/monthly_spent?from=online");
    };
 
@@ -36,6 +37,16 @@ export default function SetNumberOfPet() {
    const handleBack = () => {
       router.push("/food_purchase_location/online_competitor/online_pros");
    };
+
+
+      const updateQuestionAnswer = async (answer) => {
+            //qs: Gibt's etwas, das dich stört? 
+            // import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
+   
+            const pet_owner_id = sessionStorage.getItem("pet_owner_id");
+            const result =  updateSurveyQuestionAnwser({ pet_owner_id:pet_owner_id, sv_qs_id: 12,qs_answer: answer });
+            console.log('Inserted:', result);         
+      };
 
    const getButtonStyle = (option) =>
       option === selected

@@ -5,6 +5,8 @@ import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import TextareaInput from "@/components/form/TextareaInput";
 import { langContent } from "@/lib/langContent";
+import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
+
 
 export default function SetNumberOfPet() {
    const [selected, setSelected] = useState();
@@ -38,6 +40,7 @@ export default function SetNumberOfPet() {
 
       // Optional: Save to sessionStorage
       // sessionStorage.setItem("selected_shop", selectedValue);
+      updateQuestionAnswer(selectedValue);
 
       router.push("/food_purchase_location/online_competitor/online_pros");
    };
@@ -45,6 +48,17 @@ export default function SetNumberOfPet() {
    const handleBack = () => {
       router.push("/food_purchase_location");
    };
+
+
+       const updateQuestionAnswer = async (answer) => {
+           //qs: Bei welchen Shops bestellst du?
+           // import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
+
+           const pet_owner_id = sessionStorage.getItem("pet_owner_id");
+            const result =  updateSurveyQuestionAnwser({ pet_owner_id:pet_owner_id, sv_qs_id: 10,qs_answer: answer });
+            console.log('Inserted:', result);         
+      };
+
 
    const getButtonStyle = (option) =>
       option === selected

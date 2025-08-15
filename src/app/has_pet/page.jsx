@@ -6,6 +6,8 @@ import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
 import Image from "next/image";
 import supabase from "@/config/supabaseClient";
+import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
+
 
 export default function SetNumberOfPet() {
     const [selected, setSelected] = useState(null);
@@ -38,23 +40,26 @@ export default function SetNumberOfPet() {
         }
 
         if (selected === "4") {
+            await updateOwnerPetTypeServerInformation(4);
             router.push("/has_pet/other");
             return;
-        }
+        }else {
 
-        const petTypeMap = {
-            "1": 1, // Dog
-            "2": 2, // Cat
-            "3": 3, // Dog + Cat
-        };
+                const petTypeMap = {
+                    "1": 1, // Dog
+                    "2": 2, // Cat
+                    "3": 3, // Dog + Cat
+                };
 
-        const pet_type_id = petTypeMap[selected] || 1;
+                const pet_type_id = petTypeMap[selected] || 1;
+                await updateOwnerPetTypeServerInformation(pet_type_id);
+                router.push("/has_pet/how_many");
+            }
 
-        await updateOwnerPetTypeServerInformation(pet_type_id);
-        router.push("/has_pet/how_many");
     };
 
     const updateOwnerPetTypeServerInformation = async (pet_type_id) => {
+ 
         if (typeof window === "undefined") return;
 
         const pet_owner_id = sessionStorage.getItem("pet_owner_id");
@@ -67,22 +72,20 @@ export default function SetNumberOfPet() {
             .from("pet_owners")
             .update({ pet_type_id })
             .eq("id", pet_owner_id);
+        
 
         if (error) {
             console.error("Failed to update pet type:", error);
         } else {
             console.log("Pet type updated:", data);
-          var pet_type_name = "Katze und Hund";    
+            var pet_type_name = "Katze und Hund";    
             if (pet_type_id == 1)
                 pet_type_name ="Hund";
             else if(pet_type_id == 2)
                 pet_type_name ="Katze";
-
-            const { error: itemsError } = await supabase
-                .from('survery_histories')
-                .insert([
-                { pet_owner_id:pet_owner_id, sv_qs_id: 2, qs_answer: pet_type_name} 
-                ])
+         
+            const result =  updateSurveyQuestionAnwser({ pet_owner_id:pet_owner_id, sv_qs_id: 2,qs_answer: pet_type_name });
+            console.log('Inserted:', result);
         }
     };
 

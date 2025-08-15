@@ -29,6 +29,7 @@ export default function SetNumberOfPet() {
             const pet_owner_id = sessionStorage.getItem("pet_owner_id");
             const result =  updateSurveyQuestionAnwser({ pet_owner_id:pet_owner_id, sv_qs_id: 20,qs_answer: selected });
             console.log('Inserted:', result);
+            
          } catch (err) {
             console.error('Error inserting user:', err);
          } finally { 

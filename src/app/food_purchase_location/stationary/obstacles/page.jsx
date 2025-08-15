@@ -5,7 +5,9 @@ import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
 import TextareaInput from "@/components/form/TextareaInput"; 
-import supabase from "@/config/supabaseClient";
+import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
+
+
 
 export default function SetNumberOfPet() {
    const [selected, setSelected] = useState();
@@ -40,14 +42,12 @@ export default function SetNumberOfPet() {
    const updateQuestionNo15Answer = async (finalValue) => {
       const pet_owner_id = sessionStorage.getItem("pet_owner_id");
       if (!pet_owner_id) return;
-         // update qs answer
-         const { error: qs_error } = await supabase
-                .from('survery_histories')
-                .insert([
-                { pet_owner_id:pet_owner_id, sv_qs_id: 15, qs_answer: finalValue} 
-                ])
 
-      
+      //qs: Was nervt dich dabei am meisten?
+      // import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
+      const result =  updateSurveyQuestionAnwser({ pet_owner_id:pet_owner_id, sv_qs_id: 15,qs_answer: finalValue});
+      console.log('Inserted:', result);
+
    };
 
    const getButtonStyle = (option) =>

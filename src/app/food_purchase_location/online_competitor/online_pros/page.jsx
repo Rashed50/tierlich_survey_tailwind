@@ -5,6 +5,8 @@ import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
 import TextareaInput from "@/components/form/TextareaInput"; 
+import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
+
 
 export default function SetNumberOfPet() {
    const [selected, setSelected] = useState();
@@ -29,12 +31,22 @@ export default function SetNumberOfPet() {
       if (selected === "sonstige") {
          console.log("User custom text:", otherText);
       }
-
+      updateQuestionAnswer(selected === "sonstige" ? otherText : selected);
       router.push("/food_purchase_location/online_competitor/online_cons");
    };
 
    const handleBack = () => {
       router.push("/food_purchase_location/online_competitor/");
+   };
+
+   
+   const updateQuestionAnswer = async (answer) => {
+         //qs: Was gefällt dir da richtig gut, worauf du ungern verzichten würdest?
+         // import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
+
+         const pet_owner_id = sessionStorage.getItem("pet_owner_id");
+         const result =  updateSurveyQuestionAnwser({ pet_owner_id:pet_owner_id, sv_qs_id: 11,qs_answer: answer });
+         console.log('Inserted:', result);         
    };
 
    const getButtonStyle = (option) =>

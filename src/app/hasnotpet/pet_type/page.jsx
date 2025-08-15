@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
+import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
 
 export default function HasNotPet() {
     const [selected, setSelected] = useState();
@@ -20,12 +21,23 @@ export default function HasNotPet() {
       //       return;
       //   }
 
+      debugger;
+      console.log("Selected option:", selected);
+
        //  sessionStorage.setItem("number_of_pets", selected);
-
-
+        
+        updateQuestionAnswerInServer();
         router.push("/hasnotpet/pet_type/welcome");
        
     };
+
+        const updateQuestionAnswerInServer = async () => {
+            //qs: Welches Haustier hast du denn im Kopf?
+            const pet_owner_id = sessionStorage.getItem("pet_owner_id");
+            const result =  updateSurveyQuestionAnwser({ pet_owner_id:pet_owner_id, sv_qs_id: 26,qs_answer: "Reptil" });
+            console.log('Inserted:', result);
+    
+       };
 
       const getButtonStyle = (option) =>
       option === selected
@@ -46,16 +58,15 @@ export default function HasNotPet() {
           <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
                <select
                className="w-full bg-[#8A7B70] px-6 py-3   max-w-xs h-14 rounded-xl text-lg font-semibold hover:opacity-90 transition text-white appearance-none relative"
-               // className="appearance-none w-full bg-[#8A7B70] text-white text-sm px-6 py-3 rounded-full focus:outline-none"
              
-               defaultValue="" >
-                  <option value="" disabled>bitte auswählen</option>
+               defaultValue=""  onChange={(e) =>  setSelected(e.value)} >
+                  {/* <option value="" disabled>bitte auswählen</option> */}
                   <option value="Kleintier">Kleintier</option>
                   <option value="Fisch">Fisch</option>
                   <option value="Vogel">Vogel</option>
                   <option value="Pferd">Pferd</option>
                   <option value="Reptil">Reptil</option>
-                  <option   onClick={() => setSelected("Reptil")} value="Sonstige">Sonstige</option>
+                  <option value="Sonstige">Sonstige</option>
                </select>
 
                
@@ -69,7 +80,7 @@ export default function HasNotPet() {
             
 
             {/* Footer */}
-            <FooterComponent backHref="/set-number-of-pet" nextHref="/hasnotpet/pet_type/welcome" isSubmit />
+            <FooterComponent backHref="/set-number-of-pet"  isSubmit />
         </form>
     );
 }

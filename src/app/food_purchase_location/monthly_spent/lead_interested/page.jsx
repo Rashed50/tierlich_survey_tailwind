@@ -47,7 +47,8 @@ export default function SetNumberOfPet() {
                   return;
                } else {
                   // yes has pet
-                              router.push("/food_purchase_location/monthly_spent/GDPR");   
+                   router.push("/food_purchase_location/monthly_spent/owner_info");
+                 // this is bipass now  router.push("/food_purchase_location/monthly_spent/GDPR");   
                }
                      
             }

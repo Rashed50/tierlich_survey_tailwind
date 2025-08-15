@@ -33,6 +33,8 @@ export default function SetNumberOfPet() {
       router.push("/food_purchase_location/online/qs_what_do_you_feed/");
    };
 
+
+
    const getButtonStyle = (option) =>
       option === selected
          ? "bg-white text-[#4A3A2D] border-2 border-[#4A3A2D]"

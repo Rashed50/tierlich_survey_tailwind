@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
-
 import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer";
 
 export default function SetNumberOfPet() {

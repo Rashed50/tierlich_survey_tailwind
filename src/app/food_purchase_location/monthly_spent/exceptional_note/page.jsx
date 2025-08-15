@@ -8,29 +8,35 @@ import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // inse
 
 
 
-export default function SetNumberOfPet() {
-   const [selected, setSelected] = useState();
+export default function OtherInformation() {
+   const [other_information, setOtherInformation] = useState("");
    const [error, setError] = useState(false);
    const router = useRouter();
 
    const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "DE";
    const t = langContent[lang];
+ 
 
-   const no_of_pet = sessionStorage.getItem("number_of_pets");
+
+   if (typeof window !== "undefined") {
+      //if sesssion storage not found
+      sessionStorage.setItem("number_of_pets", "1");
+   }
+   const no_of_pet = '1'; // sessionStorage.getItem("number_of_pets");
 
    const handleSubmit = (e) => {
       e.preventDefault();
-      // if (!selected) {
-      //    setError(true);
-      //    return;
-      // }
+      if (!other_information) {
+         setError(true);
+         return;
+      }
       // setError(false);
       // console.log("Selected option:", selected);
 
 
          try {
             const pet_owner_id = sessionStorage.getItem("pet_owner_id");
-            const result =  updateSurveyQuestionAnwser({ pet_owner_id:pet_owner_id, sv_qs_id: 21,qs_answer: selected });
+            const result =  updateSurveyQuestionAnwser({ pet_owner_id:pet_owner_id, sv_qs_id: 23,qs_answer: other_information });
             console.log('Inserted:', result);
          } catch (err) {
             console.error('Error inserting user:', err);
@@ -75,8 +81,8 @@ export default function SetNumberOfPet() {
          <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
             <input
                type="text"
-               // value={""}
-               // onChange={(e) => setText(e.target.value)}
+                value={other_information}
+                onChange={(e) => setOtherInformation(e.target.value)}
                placeholder="Enter additional information"
                className="w-full max-w-xs h-10 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
             />

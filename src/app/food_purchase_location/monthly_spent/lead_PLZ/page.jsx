@@ -64,11 +64,11 @@ export default function SetNumberOfPet() {
 
          {/* Answer Buttons */}
          <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
-            <input
-               type="text"
+            <input type="number"  step="1" // ensures only integers
                 value={selected}
                // onChange={(e) => setPLZNo(e.target.value)}
-                  onChange={(e) => setPLZNo(e.target.value)}
+               
+                  onChange={(e) => setPLZNo(e.target.value.replace(/\D/g, "") )}
                placeholder="Enter Ihr PLZ information"
                className="w-full max-w-xs h-10 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
             />

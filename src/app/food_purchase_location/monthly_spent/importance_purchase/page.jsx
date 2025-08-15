@@ -5,7 +5,7 @@ import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
 import TextareaInput from "@/components/form/TextareaInput"; // ✅ যুক্ত করো
-import supabase from "@/config/supabaseClient";
+ import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
 
 
 export default function SetNumberOfPet() {
@@ -47,16 +47,15 @@ export default function SetNumberOfPet() {
   const updateQuestionNo17Answer = async (finalValue) => {
       const pet_owner_id = sessionStorage.getItem("pet_owner_id");
       if (!pet_owner_id) return;
-         // update qs answer
-         const { error: qs_error } = await supabase
-                .from('survery_histories')
-                .insert([
-                { pet_owner_id:pet_owner_id, sv_qs_id: 17, qs_answer: finalValue} 
-                ])
+      
+           //qs: Worauf achtest du am meisten beim Kauf?
+           // import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
+           if (!pet_owner_id) return;
+           const result =  updateSurveyQuestionAnwser({ pet_owner_id:pet_owner_id, sv_qs_id: 17,qs_answer: finalValue });
+           console.log('Inserted:', result);  
 
       
    };
-
 
 
    const getButtonStyle = (option) =>

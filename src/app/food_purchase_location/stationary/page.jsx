@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
-import supabase from "@/config/supabaseClient";
+import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
+
 
 export default function SetNumberOfPet() {
    const [selected, setSelected] = useState();
@@ -33,16 +34,20 @@ export default function SetNumberOfPet() {
    };
 
    const updateQuestionNo13Answer = async () => {
-      const pet_owner_id = sessionStorage.getItem("pet_owner_id");
-      if (!pet_owner_id) return;
-         // update qs answer
-         const { error: qs_error } = await supabase
-                .from('survery_histories')
-                .insert([
-                { pet_owner_id:pet_owner_id, sv_qs_id: 13, qs_answer: selected} 
-                ])
+      // const pet_owner_id = sessionStorage.getItem("pet_owner_id");
+      // if (!pet_owner_id) return;
+      //    // update qs answer
+      //    const { error: qs_error } = await supabase
+      //           .from('survery_histories')
+      //           .insert([
+      //           { pet_owner_id:pet_owner_id, sv_qs_id: 13, qs_answer: selected} 
+      //           ])
 
-      
+      //qs: Welcher Handel versorgt dich?
+      // import { updateSurveyQuestionAnwser } from "@/config/surveyQsAndAnswer"; // insert or update survey information
+      const pet_owner_id = sessionStorage.getItem("pet_owner_id");
+      const result =  updateSurveyQuestionAnwser({ pet_owner_id:pet_owner_id, sv_qs_id: 13,qs_answer: selected});
+      console.log('Inserted:', result);
    };
 
    const getButtonStyle = (option) =>
