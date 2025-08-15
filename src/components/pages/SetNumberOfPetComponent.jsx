@@ -76,6 +76,8 @@ export default function SetNumberOfPetComponent() {
                 .insert([
                 { pet_owner_id:new_row["id"], sv_qs_id: 1, qs_answer: selected =="1" ? "pet": "no pet" } 
                 ])
+            
+                
         }
     };
 

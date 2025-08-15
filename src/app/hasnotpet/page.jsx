@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
+import supabase from "@/config/supabaseClient";
+
 
 export default function HasNotPet() {
     const [selected, setSelected] = useState();
@@ -29,6 +31,19 @@ export default function HasNotPet() {
             return;
         }
     };
+
+    const updateQuestionNo14Answer = async () => {
+      const pet_owner_id = sessionStorage.getItem("pet_owner_id");
+      if (!pet_owner_id) return;
+         // update qs answer
+         const { error: qs_error } = await supabase
+                .from('survery_histories')
+                .insert([
+                { pet_owner_id:pet_owner_id, sv_qs_id: 14, qs_answer: selected} 
+                ])
+
+      
+   };
 
     const getButtonStyle = (option) =>
         option === selected
