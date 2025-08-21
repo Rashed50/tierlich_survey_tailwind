@@ -6,6 +6,7 @@ import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
 import supabase from "@/config/supabaseClient";
 
+
 export default function HasNotPet() {
    const [selected, setSelected] = useState();
    const [error, setError] = useState(false);
@@ -16,6 +17,7 @@ export default function HasNotPet() {
 
    const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "DE";
    const t = langContent[lang];
+   
 
    useEffect(() => {
       const storedPetTypeValue = sessionStorage.getItem("pet_type") || "1";
@@ -39,6 +41,9 @@ export default function HasNotPet() {
    const updateOwnerNumberOfPetsServerInformation = async (number_of_pet) => {
       const pet_owner_id = sessionStorage.getItem("pet_owner_id");
       if (!pet_owner_id) return;
+
+
+
       const { data, error } = await supabase
          .from("pet_owners")
          .update({ number_of_pet })
@@ -55,6 +60,8 @@ export default function HasNotPet() {
 
       }
    };
+
+    
 
    const handleSubmit = (e) => {
       e.preventDefault();
@@ -97,6 +104,7 @@ export default function HasNotPet() {
          };
          sessionStorage.setItem("pet_number", JSON.stringify(petData));
          updateOwnerNumberOfPetsServerInformation(selected);
+
          router.push("/input-pet-name");
       }
    };

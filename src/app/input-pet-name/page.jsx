@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import FooterComponent from "@/components/layout/FooterComponent";
 import { langContent } from "@/lib/langContent";
+import { storePetProfileInformation } from "@/config/surveyQsAndAnswer"; // insert or update survey information
+
 
 export default function SetNumberOfPet() {
    const lang = process.env.NEXT_PUBLIC_ACTIVE_LANGUAGE || "EN";
@@ -23,6 +25,7 @@ export default function SetNumberOfPet() {
             const parsedData = JSON.parse(storedData);
             setPetData(parsedData);
 
+
             // Initialize pet names object
             const namesObj = {};
             if (parsedData.type === "Hund und Katze") {
@@ -38,6 +41,7 @@ export default function SetNumberOfPet() {
                   namesObj[`${petType}_${i}`] = "";
                }
             }
+            
             setPetNames(namesObj);
 
             // Set initial input value if exists
@@ -54,6 +58,17 @@ export default function SetNumberOfPet() {
       }
    }, [router]);
 
+
+
+     
+       const savePetProfileInformation = async (pet_owner_id,pet_name,pet_type_id,) => {
+          
+            const result =  storePetProfileInformation(pet_owner_id, pet_name, pet_type_id, "");
+                      console.log('Inserted:', result);
+   
+         
+      };
+
    const handleBack = () => {
       router.push("/has_pet/how_many");
    };
@@ -67,6 +82,10 @@ export default function SetNumberOfPet() {
 
       const petKeys = Object.keys(petNames);
       const currentKey = petKeys[currentPetIndex];
+
+      const pet_owner_id = sessionStorage.getItem("pet_owner_id");
+      const  pet_type_id = sessionStorage.getItem("pet_type_id") || "1";
+      storePetProfileInformation(pet_owner_id,currentPetName,pet_type_id)
 
       // Update the current pet name
       const updatedNames = {
@@ -85,6 +104,8 @@ export default function SetNumberOfPet() {
             ...petData,
             names: updatedNames,
          };
+         console.log("All pet names collected:", allPetData);
+
          sessionStorage.setItem("pet_names", JSON.stringify(allPetData));
          router.push("/food_purchase_location");
       }

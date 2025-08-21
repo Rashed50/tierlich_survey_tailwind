@@ -65,3 +65,11 @@ export async function updatePetOwnerNameAndEmailInformation(pet_owner_id: string
 
     return data;
 }
+
+
+export async function storePetProfileInformation(pet_owner_id: string, pet_name: string, pet_type_id: string, food_source: string) {
+    const { data, error } = await supabase
+                .from("pet_profiles")
+                .insert([{pet_type_id,pet_name, food_source,pet_owner_id: parseInt(pet_owner_id) }])
+                .select("*");
+}
