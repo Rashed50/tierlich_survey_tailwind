@@ -7,6 +7,8 @@ import { langContent } from "@/lib/langContent";
 
 export default function HasNotPet() {
    const [selected, setSelected] = useState();
+   const [copied, setCopied] = useState(false);
+
       const [survey_domain_address, setSurveyDomainAddress] = useState();
    const router = useRouter();
 
@@ -38,6 +40,15 @@ export default function HasNotPet() {
          ? "bg-white text-[#4A3A2D] border-2 border-[#4A3A2D]"
          : "bg-[#4A3A2D] text-white";
 
+   
+   const handleCopy = () => {
+    const textToCopy = "Hello Germany"; 
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); 
+    });
+  };
+
    return (
       <form
          onSubmit={handleSubmit}
@@ -58,6 +69,8 @@ export default function HasNotPet() {
                className="w-full max-w-xs h-10 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
             />
 
+            {/*
+            
             <button
                type="button"
                onClick={() => setSelected("1")} // ✅ No
@@ -67,6 +80,25 @@ export default function HasNotPet() {
             >
                {"kopieren"}
             </button>
+            
+            */}
+
+
+            <button
+               type="button"
+               className={`w-30 max-w-xs h-10 text-lg font-semibold hover:opacity-90 transition`}
+               onClick={handleCopy}
+            >
+               kopieren
+            </button>
+
+
+            {copied && (
+               <span className="absolute left-0 top-12 text-sm text-green-600">
+                  ✅ Text copied!
+               </span>
+            )}
+
          </div>
 
          {/* Footer */}

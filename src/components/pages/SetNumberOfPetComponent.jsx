@@ -60,9 +60,50 @@ export default function SetNumberOfPetComponent() {
     const [email, setEmail] = useState("annonymous@gmail.com");
     const [number_of_pet, setNumberOfPet] = useState(1);
 
+    // const saveInformationInServer = async () => {
+    //     try {
+    //         // Insert into pet_owners
+    //         const { data: ownerData, error: ownerError } = await supabase
+    //             .from("pet_owners")
+    //             .insert([{ owner_name, email, number_of_pet }])
+    //             .select();
+
+    //         if (ownerError) {
+    //             console.error("Owner insert error:", ownerError.message);
+    //             return;
+    //         }
+
+    //         const newOwner = ownerData[0];
+
+    //         // Save owner_id in session
+    //         if (typeof window !== "undefined") {
+    //             sessionStorage.setItem("pet_owner_id", newOwner.id);
+    //         }
+
+    //         // Insert into survey_histories
+    //         const { error: surveyError } = await supabase
+    //             .from("survey_histories")
+    //             .insert([
+    //                 {
+    //                     pet_owner_id: newOwner.id,
+    //                     sv_qs_id: 1,
+    //                     qs_answer: selected === "1" ? "pet" : "no pet",
+    //                 },
+    //             ]);
+
+    //         if (surveyError) {
+    //             console.error("Survey insert error:", surveyError.message);
+    //         } else {
+    //             console.log("Data saved successfully!");
+    //         }
+    //     } catch (err) {
+    //         console.error("Unexpected error:", err);
+    //     }
+    // };
+
     const saveInformationInServer = async () => {
 
-              debugger;
+            //   debugger;
         const { data, error } = await supabase
             .from("pet_owners")
             .insert([{ owner_name, email, number_of_pet }])
@@ -76,10 +117,9 @@ export default function SetNumberOfPetComponent() {
             const { error: itemsError } = await supabase
                 .from('survery_histories')
                 .insert([
-                { pet_owner_id:new_row["id"], sv_qs_id: 1, qs_answer: selected =="1" ? "pet": "no pet" } 
+                { pet_owner_id:new_row["id"], sv_qs_id: 1, qs_answer: selected =="1" ? "pet": "no pet" }
                 ])
-            
-                
+
         }
     };
 
@@ -98,7 +138,9 @@ export default function SetNumberOfPetComponent() {
             {/* Answer Buttons */}
             <div className="flex flex-col gap-4 items-center justify-center mt-10 px-4">
                 {error && (
-                    <p className="text-red-500 mb-2">Bitte wählen Sie eine Option aus</p>
+                    <p className="text-red-500 mb-2">
+                        Bitte wählen Sie eine Option aus
+                    </p>
                 )}
 
                 <button

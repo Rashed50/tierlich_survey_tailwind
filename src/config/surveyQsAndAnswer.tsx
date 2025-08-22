@@ -38,7 +38,7 @@ export async function updateSurveyQuestionAnwser(survey_data: QuestionAnswer) {
                     .select("*");       // use .select() to get the inserted row back
                 if (error) {
                     console.error('Insert error:', error.message);
-                    debugger;
+                    // debugger;
                     throw new Error(error.message);
                 }
                 return data;

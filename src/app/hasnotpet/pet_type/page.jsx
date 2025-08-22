@@ -21,7 +21,7 @@ export default function HasNotPet() {
       //       return;
       //   }
 
-      debugger;
+    //   debugger;
       console.log("Selected option:", selected);
 
        //  sessionStorage.setItem("number_of_pets", selected);

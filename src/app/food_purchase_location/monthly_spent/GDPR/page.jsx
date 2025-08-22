@@ -31,7 +31,7 @@ export default function SetNumberOfPet() {
 
       // sessionStorage.setItem("number_of_pets", selected);
 
-      debugger;
+      // debugger;
       if (selected === "0") {
          // no button clicked
          router.push("/share_link");
